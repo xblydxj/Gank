@@ -29,7 +29,7 @@ import xblydxj.gank.home.fragment.VedioFragment;
 /**
  * Created by xblydxj on 2016/7/16/016.
  */
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity {
     @InjectView(R.id.home_view_pager)
     ViewPager mViewPager;
     @InjectView(R.id.home_tool_bar)
@@ -37,9 +37,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @InjectView(R.id.home_tab_layout)
     TabLayout mTabLayout;
     @InjectView(R.id.home_fab)
-    FloatingActionButton mFAB;
+    FloatingActionButton mFab;
     private List<PagerInfo> mFragments = new ArrayList<>();
-    private Snackbar mSnackBar;
 
 
     @Override
@@ -62,7 +61,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initListener() {
-        mFAB.setOnClickListener(this);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Snackbar snackbar = Snackbar.make(view, "onClick", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("知道了", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
+            }
+        });
     }
 
     private void initViewPager() {
@@ -91,22 +102,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initToolbar() {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.home_fab:
-                mSnackBar = Snackbar.make(view, "fab", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("知道了", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                mSnackBar.dismiss();
-                            }
-                        });
-                mSnackBar.show();
-                break;
         }
     }
 }
