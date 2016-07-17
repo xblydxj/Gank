@@ -1,0 +1,112 @@
+package xblydxj.gank.home;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.WindowManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import xblydxj.gank.R;
+import xblydxj.gank.bean.PagerInfo;
+import xblydxj.gank.config.AppConfig;
+import xblydxj.gank.home.fragment.AndroidFragment;
+import xblydxj.gank.home.fragment.IOSFragment;
+import xblydxj.gank.home.fragment.MeizhiFragment;
+import xblydxj.gank.home.fragment.OthersFragment;
+import xblydxj.gank.home.fragment.VedioFragment;
+
+/**
+ * Created by xblydxj on 2016/7/16/016.
+ */
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+    @InjectView(R.id.home_view_pager)
+    ViewPager mViewPager;
+    @InjectView(R.id.home_tool_bar)
+    Toolbar mToolbar;
+    @InjectView(R.id.home_tab_layout)
+    TabLayout mTabLayout;
+    @InjectView(R.id.home_fab)
+    FloatingActionButton mFAB;
+    private List<PagerInfo> mFragments = new ArrayList<>();
+    private Snackbar mSnackBar;
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }
+        ButterKnife.inject(this);
+        init();
+    }
+
+    private void init() {
+        initToolbar();
+        initFragments();
+        initViewPager();
+        initListener();
+    }
+
+    private void initListener() {
+        mFAB.setOnClickListener(this);
+    }
+
+    private void initViewPager() {
+        HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
+        homePagerAdapter.setTabFragments(mFragments);
+        mViewPager.setAdapter(homePagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabTextColors(
+                getColors(R.color.md_blue_grey_100_color_code),
+                getColors(R.color.md_white_color_code));
+    }
+
+    public int getColors(int resId) {
+        return AppConfig.sContext.getResources().getColor(resId);
+    }
+
+    private void initFragments() {
+        String[] titles = AppConfig.sContext.getResources().getStringArray(R.array.tab_names);
+        mFragments.add(new PagerInfo(titles[0], new AndroidFragment()));
+        mFragments.add(new PagerInfo(titles[1], new IOSFragment()));
+        mFragments.add(new PagerInfo(titles[2], new MeizhiFragment()));
+        mFragments.add(new PagerInfo(titles[3], new OthersFragment()));
+        mFragments.add(new PagerInfo(titles[4], new VedioFragment()));
+    }
+
+    private void initToolbar() {
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.home_fab:
+                mSnackBar = Snackbar.make(view, "fab", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("知道了", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mSnackBar.dismiss();
+                            }
+                        });
+                mSnackBar.show();
+                break;
+        }
+    }
+}
