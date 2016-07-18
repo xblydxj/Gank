@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="xblydxj.gank">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".config.AppConfig"
         android:allowBackup="true"

@@ -10,7 +10,7 @@ import xblydxj.gank.home.adapter.RefreshRecyclerAdapter;
 /**
  * Created by 46321 on 2016/7/17/017.
  */
-public interface AndroidContract {
+public interface IOSContract {
     interface View extends BaseView<Presenter> {
 
         void updateAdapter(Data data);
@@ -21,6 +21,6 @@ public interface AndroidContract {
 
         List<Data.ResultsBean> getData();
 
-        void updateData(int androidData, RefreshRecyclerAdapter AndroidAdapter);
+        void updateData(int iosData, RefreshRecyclerAdapter IOSAdapter);
     }
 }

@@ -25,6 +25,8 @@ import xblydxj.gank.home.fragment.IOSFragment;
 import xblydxj.gank.home.fragment.MeizhiFragment;
 import xblydxj.gank.home.fragment.OthersFragment;
 import xblydxj.gank.home.fragment.VedioFragment;
+import xblydxj.gank.home.presenter.AndroidPresenter;
+import xblydxj.gank.home.presenter.IOSPresenter;
 
 /**
  * Created by xblydxj on 2016/7/16/016.
@@ -58,6 +60,12 @@ public class HomeActivity extends AppCompatActivity {
         initFragments();
         initViewPager();
         initListener();
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        new IOSPresenter(new IOSFragment(), "IOS");
+        new AndroidPresenter(new AndroidFragment(), "Android");
     }
 
     private void initListener() {
@@ -82,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager.setAdapter(homePagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabTextColors(
-                getColors(R.color.md_blue_grey_100_color_code),
+                getColors(R.color.md_blue_grey_200_color_code),
                 getColors(R.color.md_white_color_code));
     }
 
