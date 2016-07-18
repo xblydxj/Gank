@@ -9,10 +9,14 @@ import xblydxj.gank.base.BaseView;
 public interface AndroidContract {
     interface View extends BaseView<Presenter> {
 
+        void showError();
+
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
+        void toWeb();
 
+        void refreshAndroid();
     }
 
 }

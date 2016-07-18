@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.PagerInfo;
 import xblydxj.gank.config.AppConfig;
@@ -30,13 +30,13 @@ import xblydxj.gank.home.fragment.VedioFragment;
  * Created by xblydxj on 2016/7/16/016.
  */
 public class HomeActivity extends AppCompatActivity {
-    @InjectView(R.id.home_view_pager)
+    @Bind(R.id.home_view_pager)
     ViewPager mViewPager;
-    @InjectView(R.id.home_tool_bar)
+    @Bind(R.id.home_tool_bar)
     Toolbar mToolbar;
-    @InjectView(R.id.home_tab_layout)
+    @Bind(R.id.home_tab_layout)
     TabLayout mTabLayout;
-    @InjectView(R.id.home_fab)
+    @Bind(R.id.home_fab)
     FloatingActionButton mFab;
     private List<PagerInfo> mFragments = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
             WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         init();
     }
 
