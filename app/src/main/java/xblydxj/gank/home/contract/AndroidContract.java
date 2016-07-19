@@ -14,12 +14,14 @@ public interface AndroidContract {
     interface View extends BaseView<Presenter> {
 
         void updateAdapter(Data data);
+
+        void showErrorSnack();
     }
 
     interface Presenter extends BasePresenter {
         void toWeb(String url);
 
-        List<Data.ResultsBean> getData();
+        void getData();
 
         void updateData(int androidData, RefreshRecyclerAdapter AndroidAdapter);
     }

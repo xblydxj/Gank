@@ -65,7 +65,6 @@ public class IOSPresenter implements IOSContract.Presenter {
                 .map(new Func1<Data, Data>() {
                     @Override
                     public Data call(Data data) {
-                        Logger.d("x",data.getResults().size());
                         return data;
                     }
                 })

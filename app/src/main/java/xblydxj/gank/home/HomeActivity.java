@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initPresenter() {
-        mAndroidFragment = new AndroidFragment();
+        mAndroidFragment = AndroidFragment.getInstance();
         mIosFragment = new IOSFragment();
         mMeizhiFragment = new MeizhiFragment();
         mOthersFragment = new OthersFragment();
@@ -111,11 +111,11 @@ public class HomeActivity extends AppCompatActivity {
     private void initFragments() {
         String[] titles = AppConfig.sContext.getResources().getStringArray(R.array.tab_names);
 
-        mFragments.add(new PagerInfo(titles[0], mAndroidFragment));
-        mFragments.add(new PagerInfo(titles[1], mIosFragment));
-        mFragments.add(new PagerInfo(titles[2], mMeizhiFragment));
-        mFragments.add(new PagerInfo(titles[3], mOthersFragment));
-        mFragments.add(new PagerInfo(titles[4], mVideoFragment));
+        mFragments.add(new PagerInfo(titles[0], mMeizhiFragment));
+        mFragments.add(new PagerInfo(titles[1], mAndroidFragment));
+        mFragments.add(new PagerInfo(titles[2], mIosFragment));
+        mFragments.add(new PagerInfo(titles[3], mVideoFragment));
+        mFragments.add(new PagerInfo(titles[4], mOthersFragment));
     }
 
     private void initToolbar() {

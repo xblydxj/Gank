@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_margin="15dp"
+              android:layout_margin="8dp"
               android:gravity="center"
               android:orientation="horizontal">
 
     <ProgressBar
         android:id="@+id/recycler_progress"
-        android:layout_width="30dp"
-        android:layout_height="30dp"/>
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
 
     <TextView
         android:id="@+id/recycler_footer"
@@ -17,5 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Loading..."
+        android:textColor="@color/md_grey_600_color_code"
         android:textSize="15sp"/>
 </LinearLayout>

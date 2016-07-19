@@ -19,6 +19,7 @@ import xblydxj.gank.bean.Data;
 import xblydxj.gank.config.AppConfig;
 import xblydxj.gank.home.adapter.RefreshRecyclerAdapter;
 import xblydxj.gank.home.contract.AndroidContract;
+import xblydxj.gank.utils.SnackUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,7 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by xblydxj on 2016/7/16/016.
  */
-public class AndroidFragment extends BaseFragment implements AndroidContract.View, RefreshRecyclerAdapter.OnItemClickListener {
+public class AndroidFragment extends BaseFragment implements AndroidContract.View, RefreshRecyclerAdapter
+        .OnItemClickListener {
     @Bind(R.id.recycler)
     RecyclerView mRecycler;
     @Bind(R.id.refresh)
@@ -40,8 +42,14 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
     private LinearLayoutManager mLinearLayoutManager;
     private int mLastVisibleItemPosition;
 
-    public AndroidFragment(){
-        Logger.d(1);
+    public AndroidFragment() {}
+
+    private static class AndroidFragmentHolder {
+        static AndroidFragment instance = new AndroidFragment();
+    }
+
+    public static AndroidFragment getInstance() {
+        return AndroidFragmentHolder.instance;
     }
 
     @Override
@@ -67,20 +75,28 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
 
 
 
+
         mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                Logger.d("+111111   "+newState + " " + mLastVisibleItemPosition + " " + mAndroidAdapter
+                        .getItemCount());
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && mLastVisibleItemPosition + 1 == mAndroidAdapter
                         .getItemCount()) {
-                    mPresenter.updateData(AndroidData.size(),mAndroidAdapter);
+                    Logger.d(newState + " " + mLastVisibleItemPosition + " " + mAndroidAdapter
+                            .getItemCount());
+
+//                    mPresenter.updateData(AndroidData.size(), mAndroidAdapter);
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                mLastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+                mLastVisibleItemPosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
+                Logger.d(mLastVisibleItemPosition + " xxx");
             }
         });
         return mContentView;
@@ -88,16 +104,10 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
 
     @Override
     protected List<Data.ResultsBean> loadFragmentData() {
-//        AndroidData = mPresenter.getData();
+        mPresenter.getData();
         //TODO
         return AndroidData;
     }
-
-
-
-
-
-
 
 
     @Override
@@ -120,9 +130,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
     }
 
 
-
-
-
     @Override
     public void setPresenter(AndroidContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
@@ -134,20 +141,18 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
     }
 
 
-
-
-
-
-
-
     @Override
     public void updateAdapter(Data data) {
-        Logger.d("5"+data.getResults().size());
         AndroidData.addAll(data.getResults());
         mAndroidAdapter = new RefreshRecyclerAdapter(AndroidData);
         mAndroidAdapter.addMoreItem(data.getResults());
         mAndroidAdapter.changeStatus(RefreshRecyclerAdapter.PULLUP_LOAD_MORE);
         mRecycler.setAdapter(mAndroidAdapter);
         mAndroidAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void showErrorSnack() {
+        SnackUtils.showSnackShort(mRecycler, "请求失败....");
     }
 }

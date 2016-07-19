@@ -70,9 +70,7 @@ public abstract class LoadStatus extends FrameLayout {
                 public void onClick(View view) {
 
                     currentStatus = STATUS_LOADING;
-                    //更新显示
                     updateView();
-                    //加载数据
                     loadData();
                 }
             });

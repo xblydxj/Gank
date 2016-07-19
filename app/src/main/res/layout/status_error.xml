@@ -16,6 +16,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:id="@+id/error_reconnect"
+        android:textColor="@color/md_grey_700_color_code"
         android:background="?android:attr/selectableItemBackground"
         android:text="重新连接"/>
 </LinearLayout>

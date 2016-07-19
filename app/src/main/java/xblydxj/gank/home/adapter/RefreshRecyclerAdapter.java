@@ -1,6 +1,5 @@
 package xblydxj.gank.home.adapter;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +29,15 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_FOOTER = 1;
 
     //上拉加载更多
-    public static final int  PULLUP_LOAD_MORE=0;
+    public static final int PULLUP_LOAD_MORE = 0;
     //正在加载中
-    public static final int  LOADING_MORE=1;
+    public static final int LOADING_MORE = 1;
     //上拉加载更多状态-默认为0
-    private int load_more_status=0;
+    private int load_more_status = 0;
 
 
     private List<Data.ResultsBean> list = new ArrayList<>();
-    private int preDay = 0;
+
 
 
     public RefreshRecyclerAdapter(List<Data.ResultsBean> data) {
@@ -46,7 +45,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void OnItemClick(String url);
     }
 
@@ -62,7 +61,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (viewType == TYPE_ITEM) {
             return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_item, parent, false));
-        } else if(viewType == TYPE_FOOTER){
+        } else if (viewType == TYPE_FOOTER) {
             return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
         }
@@ -72,28 +71,16 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ItemViewHolder){
+        if (holder instanceof ItemViewHolder) {
             final Data.ResultsBean result = list.get(position);
-            ((ItemViewHolder)holder).Author.setText(result.getWho());
-            ((ItemViewHolder)holder).Describe.setText(result.getDesc());
+            ((ItemViewHolder) holder).Author.setText(result.getWho());
+            ((ItemViewHolder) holder).Describe.setText(result.getDesc());
             //publishedAt : 2016-07-15T11:56:07.907Z
             String Date = result.getPublishedAt();
-            int day = Integer.parseInt(Date.substring(8, 10));
-            if (position == 0 || preDay != day) {
-                ((ItemViewHolder)holder).CardData.setVisibility(View.VISIBLE);
-                String date = Date.substring(0, 10);
-                ((ItemViewHolder)holder).Date.setText(date);
-            }
-            if (mOnItemClickListener != null) {
-                ((ItemViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mOnItemClickListener.OnItemClick(result.getUrl());
-                    }
-                });
-            }
-            preDay = day;
+            String day = Date.substring(0, 19).replace('T', ' ');
+            ((ItemViewHolder) holder).Date.setText(day);
         } else if (holder instanceof FooterViewHolder) {
+
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (load_more_status) {
                 case PULLUP_LOAD_MORE:
@@ -143,8 +130,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.date)
         TextView Date;
-        @Bind(R.id.date_card)
-        CardView CardData;
         @Bind(R.id.author)
         TextView Author;
         @Bind(R.id.describe)
