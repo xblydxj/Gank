@@ -6,6 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,11 +36,13 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
 
     private View mContentView;
     private RefreshRecyclerAdapter mAndroidAdapter;
-    private List<Data.ResultsBean> AndroidData;
+    private List<Data.ResultsBean> AndroidData = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private int mLastVisibleItemPosition;
 
-
+    public AndroidFragment(){
+        Logger.d(1);
+    }
 
     @Override
     protected View loadFragmentView() {
@@ -100,9 +105,6 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
         super.onResume();
         // FIXME: 2016/7/19/019
         mPresenter.subscribe();
-        mAndroidAdapter = new RefreshRecyclerAdapter(AndroidData);
-        mRecycler.setAdapter(mAndroidAdapter);
-        mAndroidAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -140,9 +142,12 @@ public class AndroidFragment extends BaseFragment implements AndroidContract.Vie
 
     @Override
     public void updateAdapter(Data data) {
-        mAndroidAdapter.addMoreItem(data.getResults());
+        Logger.d("5"+data.getResults().size());
         AndroidData.addAll(data.getResults());
+        mAndroidAdapter = new RefreshRecyclerAdapter(AndroidData);
+        mAndroidAdapter.addMoreItem(data.getResults());
         mAndroidAdapter.changeStatus(RefreshRecyclerAdapter.PULLUP_LOAD_MORE);
+        mRecycler.setAdapter(mAndroidAdapter);
+        mAndroidAdapter.setOnItemClickListener(this);
     }
-
 }

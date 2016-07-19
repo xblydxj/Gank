@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,7 +33,7 @@ public class IOSFragment extends BaseFragment implements IOSContract.View, Refre
 
     private View mContentView;
     private RefreshRecyclerAdapter mIOSAdapter;
-    private List<Data.ResultsBean> IOSData;
+    private List<Data.ResultsBean> IOSData = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private int mLastVisibleItemPosition;
 
@@ -97,9 +98,7 @@ public class IOSFragment extends BaseFragment implements IOSContract.View, Refre
         super.onResume();
         // FIXME: 2016/7/19/019
         mPresenter.subscribe();
-        mIOSAdapter = new RefreshRecyclerAdapter(IOSData);
-        mRecycler.setAdapter(mIOSAdapter);
-        mIOSAdapter.setOnItemClickListener(this);
+
     }
 
     @Override
@@ -137,8 +136,11 @@ public class IOSFragment extends BaseFragment implements IOSContract.View, Refre
 
     @Override
     public void updateAdapter(Data data) {
-        mIOSAdapter.addMoreItem(data.getResults());
         IOSData.addAll(data.getResults());
+        mIOSAdapter = new RefreshRecyclerAdapter(IOSData);
+        mIOSAdapter.addMoreItem(data.getResults());
         mIOSAdapter.changeStatus(RefreshRecyclerAdapter.PULLUP_LOAD_MORE);
+        mRecycler.setAdapter(mIOSAdapter);
+        mIOSAdapter.setOnItemClickListener(this);
     }
 }

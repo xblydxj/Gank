@@ -7,6 +7,7 @@ import java.util.List;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.api.DataApi;
@@ -27,7 +28,7 @@ public class IOSPresenter implements IOSContract.Presenter {
 
     private CompositeSubscription mSubscription;
 
-    private DataApi mIosRetrofit;
+    private DataApi mIosRetrofit = AppConfig.sRetrofit.create(DataApi.class);
 
     public IOSPresenter(IOSContract.View IOSFragmentView, String ios) {
         mIOSFragmentView = checkNotNull(IOSFragmentView);
@@ -53,7 +54,7 @@ public class IOSPresenter implements IOSContract.Presenter {
     @Override
     public void updateData(int iosData, RefreshRecyclerAdapter IOSAdapter) {
         IOSAdapter.changeStatus(RefreshRecyclerAdapter.LOADING_MORE);
-        mIosRetrofit = AppConfig.sRetrofit.create(DataApi.class);
+
         int page = iosData/10+1;
         requestData(page);
     }
@@ -61,6 +62,13 @@ public class IOSPresenter implements IOSContract.Presenter {
     private Subscription requestData(int page) {
         Subscription subscription = mIosRetrofit.getNormal(mIOS, 10, page)
                 .subscribeOn(Schedulers.io())
+                .map(new Func1<Data, Data>() {
+                    @Override
+                    public Data call(Data data) {
+                        Logger.d("x",data.getResults().size());
+                        return data;
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Data>() {
                     @Override

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,14 +58,16 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_item, parent, false));
-        } else {
-            return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+        } else if(viewType == TYPE_FOOTER){
+            return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
         }
+        Logger.d(viewType);
+        return null;
     }
 
     @Override

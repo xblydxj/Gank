@@ -39,8 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
+        app:cardBackgroundColor="@color/md_white_color_code"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         app:cardCornerRadius="2dp">
 
@@ -54,6 +55,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/describe"
                 android:drawablePadding="5dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/md_black_color_code"
                 android:drawableStart="@drawable/android_ic_android"
                 android:gravity="center_vertical"
                 android:maxLines="1"
@@ -72,6 +75,7 @@
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/android_id_author"
                 android:gravity="center"
+                android:textColor="@color/md_black_color_code"
                 android:text="ayanamist"
                 android:textSize="12sp"/>
         </LinearLayout>
