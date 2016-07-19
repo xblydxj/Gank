@@ -14,13 +14,15 @@ public interface IOSContract {
     interface View extends BaseView<Presenter> {
 
         void updateAdapter(Data data);
+
+        void showErrorSnack();
     }
 
     interface Presenter extends BasePresenter {
         void toWeb(String url);
 
-        List<Data.ResultsBean> getData();
+        void updateData(int IOSData, RefreshRecyclerAdapter IOSAdapter);
 
-        void updateData(int iosData, RefreshRecyclerAdapter IOSAdapter);
+        int isSuccess(List<Data.ResultsBean> IOSData);
     }
 }

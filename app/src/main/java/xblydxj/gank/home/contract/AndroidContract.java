@@ -21,8 +21,8 @@ public interface AndroidContract {
     interface Presenter extends BasePresenter {
         void toWeb(String url);
 
-        void getData();
-
         void updateData(int androidData, RefreshRecyclerAdapter AndroidAdapter);
+
+        int isSuccess(List<Data.ResultsBean> androidData);
     }
 }

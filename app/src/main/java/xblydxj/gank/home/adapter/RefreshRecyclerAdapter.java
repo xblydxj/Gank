@@ -71,7 +71,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ItemViewHolder) {
+        if (position < list.size()) {
             final Data.ResultsBean result = list.get(position);
             ((ItemViewHolder) holder).Author.setText(result.getWho());
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
@@ -79,17 +79,9 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             String Date = result.getPublishedAt();
             String day = Date.substring(0, 19).replace('T', ' ');
             ((ItemViewHolder) holder).Date.setText(day);
-        } else if (holder instanceof FooterViewHolder) {
-
+        } else{
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-            switch (load_more_status) {
-                case PULLUP_LOAD_MORE:
-                    footerViewHolder.mRecyclerFooter.setText("上拉加载....");
-                    break;
-                case LOADING_MORE:
-                    footerViewHolder.mRecyclerFooter.setText("Loading....");
-                    break;
-            }
+            footerViewHolder.mRecyclerFooter.setText(R.string.loading);
         }
     }
 
@@ -107,7 +99,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return TYPE_ITEM;
         }
     }
-
 
     public void addItem(List<Data.ResultsBean> newData) {
         newData.addAll(list);

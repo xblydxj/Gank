@@ -28,39 +28,46 @@ public class IOSPresenter implements IOSContract.Presenter {
 
     private CompositeSubscription mSubscription;
 
-    private DataApi mIosRetrofit = AppConfig.sRetrofit.create(DataApi.class);
+    private DataApi mIOSRetrofit = AppConfig.sRetrofit.create(DataApi.class);
 
-    public IOSPresenter(IOSContract.View IOSFragmentView, String ios) {
+    //加载状态
+    public static final int STATUS_LOADING = 100;
+    //成功状态
+    public static final int STATUS_SUCCESS = 101;
+    //失败状态
+    public static final int STATUS_ERROR = 102;
+
+
+    public IOSPresenter(IOSContract.View IOSFragmentView, String IOS) {
         mIOSFragmentView = checkNotNull(IOSFragmentView);
         mIOSFragmentView.setPresenter(this);
-        mIOS = ios;
+        mIOS = IOS;
         mSubscription = new CompositeSubscription();
     }
 
     @Override
     public void toWeb(String url) {
-        Logger.d("toWeb");
+        Logger.d("toWeb"+url);
     }
 
     @Override
-    public List<Data.ResultsBean> getData() {
-        //TODO
-        return null;
-    }
-
-
-
-
-    @Override
-    public void updateData(int iosData, RefreshRecyclerAdapter IOSAdapter) {
+    public void updateData(int IOSData, RefreshRecyclerAdapter IOSAdapter) {
         IOSAdapter.changeStatus(RefreshRecyclerAdapter.LOADING_MORE);
-
-        int page = iosData/10+1;
+        int page = IOSData/10;
         requestData(page);
     }
 
+    @Override
+    public int isSuccess(List<Data.ResultsBean> IOSData) {
+        if (IOSData.size() == 0) {
+            return STATUS_ERROR;
+        }else{
+            return STATUS_SUCCESS;
+        }
+    }
+
     private Subscription requestData(int page) {
-        Subscription subscription = mIosRetrofit.getNormal(mIOS, 10, page)
+        return mIOSRetrofit.getNormal(mIOS, 10, page)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<Data, Data>() {
                     @Override
@@ -72,12 +79,13 @@ public class IOSPresenter implements IOSContract.Presenter {
                 .subscribe(new Subscriber<Data>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mIOSFragmentView.showErrorSnack();
                         Logger.e(e, "IOSPresenter,updateData");
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -85,7 +93,6 @@ public class IOSPresenter implements IOSContract.Presenter {
                         mIOSFragmentView.updateAdapter(data);
                     }
                 });
-        return subscription;
     }
 
     @Override

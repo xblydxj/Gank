@@ -15,8 +15,8 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.PagerInfo;
 import xblydxj.gank.config.AppConfig;
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initPresenter() {
         mAndroidFragment = AndroidFragment.getInstance();
-        mIosFragment = new IOSFragment();
+        mIosFragment = IOSFragment.getInstance();
         mMeizhiFragment = new MeizhiFragment();
         mOthersFragment = new OthersFragment();
         mVideoFragment = new VideoFragment();
@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
         return AppConfig.sContext.getResources().getColor(resId);
     }
 
-    private void initFragments() {
+     private void initFragments() {
         String[] titles = AppConfig.sContext.getResources().getStringArray(R.array.tab_names);
 
         mFragments.add(new PagerInfo(titles[0], mMeizhiFragment));

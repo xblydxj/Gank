@@ -2,6 +2,8 @@ package xblydxj.gank.home.presenter;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.List;
+
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,6 +30,13 @@ public class AndroidPresenter implements AndroidContract.Presenter {
 
     private DataApi mAndroidRetrofit = AppConfig.sRetrofit.create(DataApi.class);
 
+    //加载状态
+    public static final int STATUS_LOADING = 100;
+    //成功状态
+    public static final int STATUS_SUCCESS = 101;
+    //失败状态
+    public static final int STATUS_ERROR = 102;
+
 
     public AndroidPresenter(AndroidContract.View AndroidFragmentView, String android) {
         mAndroidFragmentView = checkNotNull(AndroidFragmentView);
@@ -42,23 +51,22 @@ public class AndroidPresenter implements AndroidContract.Presenter {
     }
 
     @Override
-    public void getData() {
-        Subscription subscription = requestData(1);
-        mSubscription.add(subscription);
-    }
-
-
-
-
-    @Override
     public void updateData(int androidData, RefreshRecyclerAdapter AndroidAdapter) {
         AndroidAdapter.changeStatus(RefreshRecyclerAdapter.LOADING_MORE);
         int page = androidData/10;
         requestData(page);
     }
 
+    @Override
+    public int isSuccess(List<Data.ResultsBean> androidData) {
+        if (androidData.size() == 0) {
+            return STATUS_ERROR;
+        }else{
+            return STATUS_SUCCESS;
+        }
+    }
+
     private Subscription requestData(int page) {
-        Logger.d("requestData");
         return mAndroidRetrofit.getNormal(mAndroid, 10, page)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<Data, Data>() {
@@ -77,6 +85,7 @@ public class AndroidPresenter implements AndroidContract.Presenter {
                     public void onError(Throwable e) {
                         mAndroidFragmentView.showErrorSnack();
                         Logger.e(e, "AndroidPresenter,updateData");
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -88,7 +97,8 @@ public class AndroidPresenter implements AndroidContract.Presenter {
 
     @Override
     public void subscribe() {
-
+        Subscription subscription = requestData(1);
+        mSubscription.add(subscription);
     }
 
     @Override
