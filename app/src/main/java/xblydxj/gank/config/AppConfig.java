@@ -7,6 +7,9 @@ import android.os.Handler;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,6 +38,11 @@ public class AppConfig extends Application {
         sRetrofit = new Retrofit.Builder()
                 .baseUrl(URL.url)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient.Builder()
+                        .connectTimeout(5, TimeUnit.SECONDS)
+                        .writeTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(10, TimeUnit.SECONDS)
+                        .build())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }

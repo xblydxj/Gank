@@ -23,7 +23,7 @@ import xblydxj.gank.config.AppConfig;
 import xblydxj.gank.home.fragment.AndroidFragment;
 import xblydxj.gank.home.fragment.IOSFragment;
 import xblydxj.gank.home.fragment.MeizhiFragment;
-import xblydxj.gank.home.fragment.OthersFragment;
+import xblydxj.gank.home.fragment.FrontEndFragment;
 import xblydxj.gank.home.fragment.VideoFragment;
 import xblydxj.gank.home.presenter.AndroidPresenter;
 import xblydxj.gank.home.presenter.IOSPresenter;
@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     private AndroidFragment mAndroidFragment;
     private IOSFragment mIosFragment;
     private MeizhiFragment mMeizhiFragment;
-    private OthersFragment mOthersFragment;
+    private FrontEndFragment mFrontEndFragment;
     private VideoFragment mVideoFragment;
 
 
@@ -72,10 +72,10 @@ public class HomeActivity extends AppCompatActivity {
         mAndroidFragment = AndroidFragment.getInstance();
         mIosFragment = IOSFragment.getInstance();
         mMeizhiFragment = new MeizhiFragment();
-        mOthersFragment = new OthersFragment();
+        mFrontEndFragment = new FrontEndFragment();
         mVideoFragment = new VideoFragment();
-        new AndroidPresenter(mAndroidFragment, "Android");
-        new IOSPresenter(mIosFragment, "IOS");
+        new AndroidPresenter(mAndroidFragment);
+        new IOSPresenter(mIosFragment);
     }
 
     private void initListener() {
@@ -108,14 +108,14 @@ public class HomeActivity extends AppCompatActivity {
         return AppConfig.sContext.getResources().getColor(resId);
     }
 
-     private void initFragments() {
+    private void initFragments() {
         String[] titles = AppConfig.sContext.getResources().getStringArray(R.array.tab_names);
 
         mFragments.add(new PagerInfo(titles[0], mMeizhiFragment));
         mFragments.add(new PagerInfo(titles[1], mAndroidFragment));
         mFragments.add(new PagerInfo(titles[2], mIosFragment));
-        mFragments.add(new PagerInfo(titles[3], mVideoFragment));
-        mFragments.add(new PagerInfo(titles[4], mOthersFragment));
+        mFragments.add(new PagerInfo(titles[3], mFrontEndFragment));
+        mFragments.add(new PagerInfo(titles[4], mVideoFragment));
     }
 
     private void initToolbar() {

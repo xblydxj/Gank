@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
+import xblydxj.gank.home.fragment.BaseFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -65,6 +66,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
         }
+
         Logger.d(viewType);
         return null;
     }
@@ -79,10 +81,22 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             String Date = result.getPublishedAt();
             String day = Date.substring(0, 19).replace('T', ' ');
             ((ItemViewHolder) holder).Date.setText(day);
+            if (mOnItemClickListener != null) {
+                ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mOnItemClickListener.OnItemClick(result.getUrl());
+                    }
+                });
+            }
+
         } else{
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
+            new BaseFragment().mPresenter.upPullLoad(list.size());
+            //TODO
         }
+
     }
 
     @Override
@@ -100,17 +114,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public void addItem(List<Data.ResultsBean> newData) {
-        newData.addAll(list);
-        list.clear();
-        list.addAll(newData);
-        notifyDataSetChanged();
-    }
-
-    public void addMoreItem(List<Data.ResultsBean> data) {
-        list.addAll(data);
-        notifyDataSetChanged();
-    }
 
     public void changeStatus(int status) {
         load_more_status = status;
