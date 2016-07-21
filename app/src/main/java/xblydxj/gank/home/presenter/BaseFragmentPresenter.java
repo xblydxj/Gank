@@ -92,6 +92,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void updateData() {
         initialData(false);
+        mBaseView.stopRefreshing();
     }
 
     @Override

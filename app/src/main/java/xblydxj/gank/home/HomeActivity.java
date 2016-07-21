@@ -24,6 +24,7 @@ import xblydxj.gank.home.fragment.IOSFragment;
 import xblydxj.gank.home.fragment.MeizhiFragment;
 import xblydxj.gank.home.fragment.VideoFragment;
 import xblydxj.gank.home.presenter.AndroidPresenter;
+import xblydxj.gank.home.presenter.FrontEndPresenter;
 import xblydxj.gank.home.presenter.IOSPresenter;
 
 /**
@@ -70,11 +71,12 @@ public class HomeActivity extends AppCompatActivity {
     private void initPresenter() {
         mAndroidFragment = AndroidFragment.getInstance();
         mIosFragment = IOSFragment.getInstance();
+        mFrontEndFragment = FrontEndFragment.getInstance();
         mMeizhiFragment = new MeizhiFragment();
-        mFrontEndFragment = new FrontEndFragment();
         mVideoFragment = new VideoFragment();
         new AndroidPresenter(mAndroidFragment);
         new IOSPresenter(mIosFragment);
+        new FrontEndPresenter(mFrontEndFragment);
     }
 
     private void initListener() {

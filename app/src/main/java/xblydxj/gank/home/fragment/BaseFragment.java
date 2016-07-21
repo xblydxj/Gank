@@ -50,7 +50,9 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.subscribe();
+        if (list.size() == 0) {
+            mPresenter.subscribe();
+        }
     }
 
     @Override
@@ -100,6 +102,12 @@ public class BaseFragment extends Fragment implements BaseContract.View {
                 mPresenter.toWeb(url);
             }
         });
+        mAdapter.setOnUpPull(new RefreshRecyclerAdapter.OnUpPull() {
+            @Override
+            public void upPullLoad(int size) {
+                mPresenter.upPullLoad(size);
+            }
+        });
         reconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,5 +134,10 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     public void updateAdapter(Data data) {
         list.addAll(data.getResults());
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void stopRefreshing() {
+        mRefresh.setRefreshing(false);
     }
 }

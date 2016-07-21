@@ -15,7 +15,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.home.fragment.BaseFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -72,7 +71,8 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == TYPE_ITEM) {
+        if (position != 0 && position < list.size()) {
+            Logger.d("item:"+position);
             final Data.ResultsBean result = list.get(position);
             ((ItemViewHolder) holder).Author.setText(result.getWho());
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
@@ -88,14 +88,27 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 });
             }
-        } else if (position != 0 && getItemViewType(position) == TYPE_FOOTER) {
-            Logger.d("111:"+position);
+        } else if (position != 0 && list.size() == position) {
+            Logger.d("111:" + position);
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
-            new BaseFragment().mPresenter.upPullLoad(list.size());
-            //TODO
+            if (mOnUpPull != null) {
+//                mOnUpPull.upPullLoad(list.size());
+            }
         }
     }
+
+
+    public interface OnUpPull{
+        void upPullLoad(int size);
+    }
+
+    private OnUpPull mOnUpPull;
+    public void setOnUpPull(OnUpPull onUpPull){
+        mOnUpPull = onUpPull;
+    }
+
+
 
     @Override
     public int getItemCount() {
