@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     >
 
-    <!--<include layout="@layout/status_loading"/>-->
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
@@ -28,5 +26,4 @@
         </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <!--<include layout="@layout/status_error"/>-->
 </xblydxj.gank.manager.uimanager.LoadStatus>

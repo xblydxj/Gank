@@ -10,15 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
+import xblydxj.gank.config.AppConfig;
 import xblydxj.gank.home.adapter.RefreshRecyclerAdapter;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
@@ -31,21 +34,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseFragment extends Fragment implements BaseContract.View {
 
-    private View mContentView;
     @Bind(R.id.recycler)
     RecyclerView mRecycler;
     @Bind(R.id.refresh)
     SwipeRefreshLayout mRefresh;
-    private List<Data.ResultsBean> list = new ArrayList<>();
+    @Bind(R.id.error_reconnect)
+    Button reconnect;
 
-    @OnClick(R.id.error_reconnect)
-    void reconnect() {
-        list.clear();
-        mPresenter.reconnect();
-    }
+    private List<Data.ResultsBean> list = new ArrayList<>();
 
     public RefreshRecyclerAdapter mAdapter = new RefreshRecyclerAdapter(list);
     public BaseContract.Presenter mPresenter;
+    public LoadStatus mLoadStatus;
 
     @Override
     public void onResume() {
@@ -57,7 +57,6 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     public void onPause() {
         super.onPause();
         mPresenter.unSubscribe();
-
     }
 
     @Override
@@ -71,10 +70,10 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-//        mLoadStatus = new LoadStatus(getContext()) {};
-//        mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
-        mContentView = new LoadStatus(getContext());
-        ButterKnife.bind(this, mContentView);
+        mLoadStatus = new LoadStatus(getContext());
+        View contentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
+
+        ButterKnife.bind(this, contentView);
 
         mRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.md_red_400_color_code),
@@ -84,7 +83,7 @@ public class BaseFragment extends Fragment implements BaseContract.View {
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         initListener();
         mRecycler.setAdapter(mAdapter);
-        return mContentView;
+        return contentView;
     }
 
     private void initListener() {
@@ -99,6 +98,14 @@ public class BaseFragment extends Fragment implements BaseContract.View {
             @Override
             public void OnItemClick(String url) {
                 mPresenter.toWeb(url);
+            }
+        });
+        reconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list.clear();
+                Logger.d("onclick");
+                mPresenter.reconnect();
             }
         });
     }

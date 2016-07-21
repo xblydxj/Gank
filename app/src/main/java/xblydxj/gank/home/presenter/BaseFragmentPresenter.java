@@ -21,10 +21,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     private final BaseContract.View mBaseView;
     private CompositeSubscription mSubscription;
-    private LoadStatus mLoadStatus;
+    private LoadStatus mLoadStatus = new LoadStatus(AppConfig.sContext);
     private DataApi mRetrofit;
     private String mType;
-
+    //加载状态
+    public final int STATUS_LOADING = 100;
+    //成功状态
+    public final int STATUS_SUCCESS = 101;
+    //失败状态
+    public final int STATUS_ERROR = 102;
     public BaseFragmentPresenter(BaseContract.View baseView,String type) {
         mBaseView = checkNotNull(baseView);
         mBaseView.setPresenter(this);
@@ -40,29 +45,25 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void subscribe() {
         mRetrofit = AppConfig.sRetrofit.create(DataApi.class);
-        mLoadStatus = new LoadStatus(AppConfig.sContext) {};
         initialData(true);
     }
 
     private void initialData(boolean isNotRefresh) {
         if(isNotRefresh) {
-            mLoadStatus.currentStatus = mLoadStatus.STATUS_LOADING;
-            mLoadStatus.updateView();
+            mLoadStatus.updateView(STATUS_LOADING);
         }
         getData(1);
     }
 
-
     private void getData(int page) {
         mSubscription.clear();
-        Subscription subscription = mRetrofit.getNormal(mType, 10, page)
+        Subscription subscription = mRetrofit.getNormal(mType, 20, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Data>() {
                     @Override
                     public void onCompleted() {
-                        mLoadStatus.currentStatus = mLoadStatus.STATUS_SUCCESS;
-                        mLoadStatus.updateView();
+                        mLoadStatus.updateView(STATUS_SUCCESS);
                         Logger.d("success");
                     }
 
@@ -70,6 +71,8 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                     public void onError(Throwable e) {
                         //TODO 去本地拿数据，如果本地没有更新状态为error
                         Logger.e(e, "error");
+                        mLoadStatus.updateView(STATUS_ERROR);
+                        e.printStackTrace();
                         mBaseView.showErrorSnack();
                     }
 

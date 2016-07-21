@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 
 import com.orhanobut.logger.Logger;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import xblydxj.gank.R;
 import xblydxj.gank.config.AppConfig;
 
@@ -15,22 +17,16 @@ import xblydxj.gank.config.AppConfig;
  */
 public class LoadStatus extends FrameLayout {
 
-    //    @Bind(R.id.error)
-    private View mErrorView;
-    //    @Bind(R.id.loading)
-    private View mLoadingView;
-    /***************************
-     * 显示状态
-     **************************/
+    @Bind(R.id.error)
+    View mErrorView;
+    @Bind(R.id.loading)
+    View mLoadingView;
     //加载状态
     public final int STATUS_LOADING = 100;
     //成功状态
     public final int STATUS_SUCCESS = 101;
     //失败状态
     public final int STATUS_ERROR = 102;
-    //当前状态
-    public int currentStatus = STATUS_LOADING;
-
 
     public LoadStatus(Context context) {
         this(context, null);
@@ -45,18 +41,13 @@ public class LoadStatus extends FrameLayout {
         init();
     }
 
-    private void init() {
-        mErrorView = View.inflate(AppConfig.sContext, R.layout.status_loading, this);
-        mLoadingView = View.inflate(AppConfig.sContext, R.layout.status_error, this);
-        addView(mLoadingView);
-        addView(mErrorView);
-        Logger.d("111  " + this.getChildCount());
-//        ButterKnife.bind(this);
-//        mErrorView = (LinearLayout) this.findViewById(R.id.error);
-//        mLoadingView = (FrameLayout) this.findViewById(R.id.loading);
+    public void init() {
+        View.inflate(AppConfig.sContext, R.layout.status, this);
+        Logger.d("init");
+        ButterKnife.bind(this);
     }
 
-    public void updateView() {
+    public void updateView(int currentStatus) {
         switch (currentStatus) {
             case STATUS_ERROR:
                 Logger.d("error");

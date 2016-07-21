@@ -1,6 +1,5 @@
 package xblydxj.gank.home;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +19,9 @@ import xblydxj.gank.R;
 import xblydxj.gank.bean.PagerInfo;
 import xblydxj.gank.config.AppConfig;
 import xblydxj.gank.home.fragment.AndroidFragment;
+import xblydxj.gank.home.fragment.FrontEndFragment;
 import xblydxj.gank.home.fragment.IOSFragment;
 import xblydxj.gank.home.fragment.MeizhiFragment;
-import xblydxj.gank.home.fragment.FrontEndFragment;
 import xblydxj.gank.home.fragment.VideoFragment;
 import xblydxj.gank.home.presenter.AndroidPresenter;
 import xblydxj.gank.home.presenter.IOSPresenter;
@@ -40,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     TabLayout mTabLayout;
     @Bind(R.id.home_fab)
     FloatingActionButton mFab;
+
     private List<PagerInfo> mFragments = new ArrayList<>();
     private AndroidFragment mAndroidFragment;
     private IOSFragment mIosFragment;
@@ -52,10 +51,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+//            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+//        }
         ButterKnife.bind(this);
         init();
     }

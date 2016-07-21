@@ -40,7 +40,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private List<Data.ResultsBean> list = new ArrayList<>();
 
 
-
     public RefreshRecyclerAdapter(List<Data.ResultsBean> data) {
         list = checkNotNull(data);
     }
@@ -73,7 +72,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position < list.size()) {
+        if (getItemViewType(position) == TYPE_ITEM) {
             final Data.ResultsBean result = list.get(position);
             ((ItemViewHolder) holder).Author.setText(result.getWho());
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
@@ -89,14 +88,13 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 });
             }
-
-        } else{
+        } else if (position != 0 && getItemViewType(position) == TYPE_FOOTER) {
+            Logger.d("111:"+position);
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
             new BaseFragment().mPresenter.upPullLoad(list.size());
             //TODO
         }
-
     }
 
     @Override
