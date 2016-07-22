@@ -46,6 +46,7 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     public RefreshRecyclerAdapter mAdapter = new RefreshRecyclerAdapter(list);
     public BaseContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
+    private View mContentView;
 
     @Override
     public void onResume() {
@@ -73,9 +74,9 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         mLoadStatus = new LoadStatus(getContext());
-        View contentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
+        mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
 
-        ButterKnife.bind(this, contentView);
+        ButterKnife.bind(this, mContentView);
 
         mRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.md_red_400_color_code),
@@ -85,7 +86,7 @@ public class BaseFragment extends Fragment implements BaseContract.View {
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         initListener();
         mRecycler.setAdapter(mAdapter);
-        return contentView;
+        return mContentView;
     }
 
     private void initListener() {
@@ -139,5 +140,10 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     @Override
     public void stopRefreshing() {
         mRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void updateStatus(int status) {
+        ((LoadStatus)mContentView).updateView(status);
     }
 }

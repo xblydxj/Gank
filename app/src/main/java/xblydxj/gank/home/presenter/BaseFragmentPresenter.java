@@ -11,7 +11,6 @@ import xblydxj.gank.api.DataApi;
 import xblydxj.gank.bean.Data;
 import xblydxj.gank.config.AppConfig;
 import xblydxj.gank.home.contract.BaseContract;
-import xblydxj.gank.manager.uimanager.LoadStatus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     private final BaseContract.View mBaseView;
     private CompositeSubscription mSubscription;
-    private LoadStatus mLoadStatus = new LoadStatus(AppConfig.sContext);
     private DataApi mRetrofit;
     private String mType;
     //加载状态
@@ -50,7 +48,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
     private void initialData(boolean isNotRefresh) {
         if(isNotRefresh) {
-            mLoadStatus.updateView(STATUS_LOADING);
+            mBaseView.updateStatus(STATUS_LOADING);
         }
         getData(1);
     }
@@ -63,7 +61,8 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                 .subscribe(new Subscriber<Data>() {
                     @Override
                     public void onCompleted() {
-                        mLoadStatus.updateView(STATUS_SUCCESS);
+                        mBaseView.updateStatus(STATUS_SUCCESS);
+                        mBaseView.stopRefreshing();
                         Logger.d("success");
                     }
 
@@ -71,7 +70,8 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                     public void onError(Throwable e) {
                         //TODO 去本地拿数据，如果本地没有更新状态为error
                         Logger.e(e, "error");
-                        mLoadStatus.updateView(STATUS_ERROR);
+                        mBaseView.updateStatus(STATUS_ERROR);
+                        mBaseView.stopRefreshing();
                         e.printStackTrace();
                         mBaseView.showErrorSnack();
                     }
@@ -92,7 +92,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void updateData() {
         initialData(false);
-        mBaseView.stopRefreshing();
+
     }
 
     @Override

@@ -14,6 +14,8 @@ public class BaseContract {
         void updateAdapter(Data data);
 
         void stopRefreshing();
+
+        void updateStatus(int status);
     }
 
     public interface Presenter extends BasePresenter {

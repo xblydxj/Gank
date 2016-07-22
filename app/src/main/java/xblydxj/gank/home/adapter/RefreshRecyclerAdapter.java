@@ -28,13 +28,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
-    //上拉加载更多
-    public static final int PULLUP_LOAD_MORE = 0;
-    //正在加载中
-    public static final int LOADING_MORE = 1;
-    //上拉加载更多状态-默认为0
-    private int load_more_status = 0;
-
 
     private List<Data.ResultsBean> list = new ArrayList<>();
 
@@ -44,6 +37,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
+    //条目点击回调
     public interface OnItemClickListener {
         void OnItemClick(String url);
     }
@@ -64,15 +58,14 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
         }
-
         Logger.d(viewType);
         return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position != 0 && position < list.size()) {
-            Logger.d("item:"+position);
+        if (position < list.size()) {
+            Logger.d("item:" + position);
             final Data.ResultsBean result = list.get(position);
             ((ItemViewHolder) holder).Author.setText(result.getWho());
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
@@ -88,7 +81,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 });
             }
-        } else if (position != 0 && list.size() == position) {
+        } else if (list.size() != 0 && position != 0 && list.size() == position) {
             Logger.d("111:" + position);
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
@@ -98,16 +91,16 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-
-    public interface OnUpPull{
+    //上拉加载回调
+    public interface OnUpPull {
         void upPullLoad(int size);
     }
 
     private OnUpPull mOnUpPull;
-    public void setOnUpPull(OnUpPull onUpPull){
+
+    public void setOnUpPull(OnUpPull onUpPull) {
         mOnUpPull = onUpPull;
     }
-
 
 
     @Override
@@ -123,12 +116,6 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else {
             return TYPE_ITEM;
         }
-    }
-
-
-    public void changeStatus(int status) {
-        load_more_status = status;
-        notifyDataSetChanged();
     }
 
 
