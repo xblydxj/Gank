@@ -19,13 +19,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
-import xblydxj.gank.bean.Data;
-import xblydxj.gank.config.AppConfig;
-import xblydxj.gank.home.adapter.RefreshRecyclerAdapter;
+import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
-import xblydxj.gank.utils.SnackUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -41,9 +40,9 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     @Bind(R.id.error_reconnect)
     Button reconnect;
 
-    private List<Data.ResultsBean> list = new ArrayList<>();
+    private List<dataCatch> list = new ArrayList<>();
 
-    public RefreshRecyclerAdapter mAdapter = new RefreshRecyclerAdapter(list);
+    public NormalRecyclerAdapter mAdapter = new NormalRecyclerAdapter(list);
     public BaseContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
     private View mContentView;
@@ -97,13 +96,13 @@ public class BaseFragment extends Fragment implements BaseContract.View {
                 mPresenter.updateData();
             }
         });
-        mAdapter.setOnItemClickListener(new RefreshRecyclerAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new NormalRecyclerAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(String url) {
                 mPresenter.toWeb(url);
             }
         });
-        mAdapter.setOnUpPull(new RefreshRecyclerAdapter.OnUpPull() {
+        mAdapter.setOnUpPull(new NormalRecyclerAdapter.OnUpPull() {
             @Override
             public void upPullLoad(int size) {
                 mPresenter.upPullLoad(size);
@@ -127,13 +126,8 @@ public class BaseFragment extends Fragment implements BaseContract.View {
 
 
     @Override
-    public void showErrorSnack() {
-        SnackUtils.showSnackShort(mRecycler, "请求失败....");
-    }
-
-    @Override
-    public void updateAdapter(Data data) {
-        list.addAll(data.getResults());
+    public void updateAdapter(List<dataCatch> data) {
+        list.addAll(data);
         mAdapter.notifyDataSetChanged();
     }
 

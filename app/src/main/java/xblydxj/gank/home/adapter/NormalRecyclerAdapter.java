@@ -14,14 +14,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
-import xblydxj.gank.bean.Data;
+import xblydxj.gank.db.dataCatch;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by 46321 on 2016/7/18/018.
  */
-public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /*******
      * 普通类型item与底部item
      ********/
@@ -29,10 +29,10 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int TYPE_FOOTER = 1;
 
 
-    private List<Data.ResultsBean> list = new ArrayList<>();
+    private List<dataCatch> list = new ArrayList<>();
 
 
-    public RefreshRecyclerAdapter(List<Data.ResultsBean> data) {
+    public NormalRecyclerAdapter(List<dataCatch> data) {
         list = checkNotNull(data);
     }
 
@@ -64,13 +64,13 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position < list.size()) {
+        if (getItemViewType(position) == TYPE_ITEM) {
             Logger.d("item:" + position);
-            final Data.ResultsBean result = list.get(position);
-            ((ItemViewHolder) holder).Author.setText(result.getWho());
+            final dataCatch result = list.get(position);
+            ((ItemViewHolder) holder).Author.setText(result.getAuthor());
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
             //publishedAt : 2016-07-15T11:56:07.907Z
-            String Date = result.getPublishedAt();
+            String Date = result.getTime();
             String day = Date.substring(0, 19).replace('T', ' ');
             ((ItemViewHolder) holder).Date.setText(day);
             if (mOnItemClickListener != null) {
@@ -81,12 +81,12 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 });
             }
-        } else if (list.size() != 0 && position != 0 && list.size() == position) {
+        } else {
             Logger.d("111:" + position);
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
             if (mOnUpPull != null) {
-//                mOnUpPull.upPullLoad(list.size());
+                mOnUpPull.upPullLoad(list.size());
             }
         }
     }
@@ -106,8 +106,9 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemCount() {
         //添加一项脚布局
-        return list.size() + 1;
+        return list.size() == 0 ? 0 : list.size() + 1;
     }
+
 
     @Override
     public int getItemViewType(int position) {

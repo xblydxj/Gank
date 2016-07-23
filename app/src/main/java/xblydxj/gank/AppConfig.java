@@ -1,7 +1,8 @@
-package xblydxj.gank.config;
+package xblydxj.gank;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 
 import com.orhanobut.logger.Logger;
@@ -14,6 +15,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import xblydxj.gank.api.URL;
+import xblydxj.gank.db.DaoMaster;
+import xblydxj.gank.db.DaoSession;
+import xblydxj.gank.db.dataCatchDao;
 
 /**
  * Created by 46321 on 2016/7/16/016.
@@ -32,6 +36,7 @@ public class AppConfig extends Application {
         Logger.init();
         LeakCanary.install(this);
         initRetrofit();
+        setupDatabase();
     }
 
     private void initRetrofit() {
@@ -45,5 +50,13 @@ public class AppConfig extends Application {
                         .build())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+    }
+
+    private void setupDatabase(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "data.db", null);
+        SQLiteDatabase database = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(database);
+        DaoSession daoSession = daoMaster.newSession();
+        dataCatchDao dao = daoSession.getDataCatchDao();
     }
 }

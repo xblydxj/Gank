@@ -10,7 +10,7 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
-import xblydxj.gank.config.AppConfig;
+import xblydxj.gank.AppConfig;
 
 /**
  * Created by 46321 on 2016/7/18/018.

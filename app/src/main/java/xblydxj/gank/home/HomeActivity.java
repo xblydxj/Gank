@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.PagerInfo;
-import xblydxj.gank.config.AppConfig;
+import xblydxj.gank.AppConfig;
 import xblydxj.gank.home.fragment.AndroidFragment;
 import xblydxj.gank.home.fragment.FrontEndFragment;
 import xblydxj.gank.home.fragment.IOSFragment;

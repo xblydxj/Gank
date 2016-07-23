@@ -1,17 +1,18 @@
 package xblydxj.gank.home.contract;
 
-import xblydxj.gank.base.BasePresenter;
-import xblydxj.gank.base.BaseView;
-import xblydxj.gank.bean.Data;
+import java.util.List;
+
+import xblydxj.gank.BasePresenter;
+import xblydxj.gank.BaseView;
+import xblydxj.gank.db.dataCatch;
 
 /**
  * Created by 46321 on 2016/7/21/021.
  */
 public class BaseContract {
     public interface View extends BaseView<Presenter> {
-        void showErrorSnack();
 
-        void updateAdapter(Data data);
+        void updateAdapter(List<dataCatch> data);
 
         void stopRefreshing();
 

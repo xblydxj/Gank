@@ -40,14 +40,13 @@
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/home_view_pager"
-            android:layout_width="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </android.support.v4.view.ViewPager>
-
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/home_fab"
