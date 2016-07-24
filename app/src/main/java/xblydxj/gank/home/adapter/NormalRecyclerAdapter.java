@@ -39,7 +39,7 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     //条目点击回调
     public interface OnItemClickListener {
-        void OnItemClick(String url);
+        void OnItemClick(String url,String desc);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -67,7 +67,13 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (getItemViewType(position) == TYPE_ITEM) {
             Logger.d("item:" + position);
             final dataCatch result = list.get(position);
-            ((ItemViewHolder) holder).Author.setText(result.getAuthor());
+            String author = result.getAuthor();
+            if (author.equals("")) {
+                ((ItemViewHolder) holder).Author.setVisibility(View.INVISIBLE);
+            } else {
+                ((ItemViewHolder) holder).Author.setVisibility(View.VISIBLE);
+                ((ItemViewHolder) holder).Author.setText(author);
+            }
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
             //publishedAt : 2016-07-15T11:56:07.907Z
             String Date = result.getTime();
@@ -77,7 +83,7 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mOnItemClickListener.OnItemClick(result.getUrl());
+                        mOnItemClickListener.OnItemClick(result.getUrl(),result.getDesc());
                     }
                 });
             }

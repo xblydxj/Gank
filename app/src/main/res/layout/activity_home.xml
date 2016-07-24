@@ -34,7 +34,6 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/md_white_color_code"
-            app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/md_white_color_code"
             app:tabTextColor="#000">
         </android.support.design.widget.TabLayout>

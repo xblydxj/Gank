@@ -1,5 +1,6 @@
 package xblydxj.gank.home.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -72,8 +73,8 @@ public class BaseFragment extends Fragment implements BaseContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        mLoadStatus = new LoadStatus(getContext());
         mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
+        mLoadStatus = new LoadStatus(getContext());
 
         ButterKnife.bind(this, mContentView);
 
@@ -98,8 +99,8 @@ public class BaseFragment extends Fragment implements BaseContract.View {
         });
         mAdapter.setOnItemClickListener(new NormalRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(String url) {
-                mPresenter.toWeb(url);
+            public void OnItemClick(String url,String desc) {
+                mPresenter.toWeb(url,desc);
             }
         });
         mAdapter.setOnUpPull(new NormalRecyclerAdapter.OnUpPull() {
@@ -138,6 +139,11 @@ public class BaseFragment extends Fragment implements BaseContract.View {
 
     @Override
     public void updateStatus(int status) {
-        ((LoadStatus)mContentView).updateView(status);
+        ((LoadStatus) mContentView).updateView(status);
+    }
+
+    @Override
+    public void intentToWeb(Intent intent) {
+        startActivity(intent);
     }
 }

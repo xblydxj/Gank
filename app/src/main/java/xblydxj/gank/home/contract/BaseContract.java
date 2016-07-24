@@ -1,5 +1,7 @@
 package xblydxj.gank.home.contract;
 
+import android.content.Intent;
+
 import java.util.List;
 
 import xblydxj.gank.BasePresenter;
@@ -17,6 +19,8 @@ public class BaseContract {
         void stopRefreshing();
 
         void updateStatus(int status);
+
+        void intentToWeb(Intent intent);
     }
 
     public interface Presenter extends BasePresenter {
@@ -27,6 +31,6 @@ public class BaseContract {
 
         void upPullLoad(int listSize);
 
-        void toWeb(String url);
+        void toWeb(String url,String desc);
     }
 }

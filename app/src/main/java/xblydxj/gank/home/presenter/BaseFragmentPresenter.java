@@ -1,5 +1,6 @@
 package xblydxj.gank.home.presenter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.orhanobut.logger.Logger;
@@ -19,6 +20,7 @@ import xblydxj.gank.db.dataCatch;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.home.model.baseModel;
 import xblydxj.gank.utils.NetWorkUtil;
+import xblydxj.gank.web.WebActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,6 +38,10 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     public final int STATUS_SUCCESS = 101;
     //失败状态
     public final int STATUS_ERROR = 102;
+
+    private static final String URL = "URL";
+    private static final String DESC = "DESC";
+
     private baseModel mBaseModel = new baseModel();
 
 
@@ -47,8 +53,13 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     }
 
     @Override
-    public void toWeb(String url) {
+    public void toWeb(String url, String desc) {
         Logger.d("toWeb" + url);
+        Intent intent = new Intent();
+        intent.putExtra(URL, url);
+        intent.putExtra(DESC, desc);
+        intent.setClass(AppConfig.sContext, WebActivity.class);
+        mBaseView.intentToWeb(intent);
     }
 
     @Override
@@ -109,35 +120,35 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
     private Subscription getRetrofitData(final int page) {
         return mRetrofit.getNormal(mType, 10, page)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Data>() {
-                            @Override
-                            public void onCompleted() {
-                                mBaseView.updateStatus(STATUS_SUCCESS);
-                                mBaseView.stopRefreshing();
-                                Logger.d("success");
-                            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Data>() {
+                    @Override
+                    public void onCompleted() {
+                        mBaseView.updateStatus(STATUS_SUCCESS);
+                        mBaseView.stopRefreshing();
+                        Logger.d("success");
+                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Logger.e(e, "error");
-                                mBaseView.stopRefreshing();
-                                mBaseView.updateStatus(STATUS_ERROR);
-                                e.printStackTrace();
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.e(e, "error");
+                        mBaseView.stopRefreshing();
+                        mBaseView.updateStatus(STATUS_ERROR);
+                        e.printStackTrace();
+                    }
 
-                            @Override
-                            public void onNext(Data data) {
-                                List<dataCatch> list = toDataCatch(data);
-                                mBaseView.updateAdapter(list);
-                                if(page==1) {
-                                    mBaseModel.putListToDB(list, mType);
-                                }else{
-                                    mBaseModel.putListToDBNotDelete(list,mType);
-                                }
-                            }
-                        });
+                    @Override
+                    public void onNext(Data data) {
+                        List<dataCatch> list = toDataCatch(data);
+                        mBaseView.updateAdapter(list);
+                        if (page == 1) {
+                            mBaseModel.putListToDB(list, mType);
+                        } else {
+                            mBaseModel.putListToDBNotDelete(list, mType);
+                        }
+                    }
+                });
     }
 
     @NonNull
@@ -151,7 +162,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
             dataCatch.setTime(result.getPublishedAt());
             dataCatch.setType(mType);
             dataCatch.setUrl(result.getUrl());
-            Logger.d("url"+result.getUrl());
+            Logger.d("url" + result.getUrl());
             list.add(dataCatch);
         }
         return list;
