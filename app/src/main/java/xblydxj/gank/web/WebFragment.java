@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -32,10 +34,7 @@ public class WebFragment extends Fragment implements WebContract.View {
     TextView mWebHeaderTitle;
     @Bind(R.id.web_content)
     WebView mWebContent;
-    @Bind(R.id.web_fab_back)
-    FloatingActionButton mWebFabBack;
-    @Bind(R.id.web_fab_forward)
-    FloatingActionButton mWebFabForward;
+
     @Bind(R.id.web_progress)
     ProgressBar mWebProgress;
     private WebContract.Presenter mPresenter;
@@ -54,6 +53,7 @@ public class WebFragment extends Fragment implements WebContract.View {
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
+        initWebView();
     }
 
     @Override
@@ -73,22 +73,23 @@ public class WebFragment extends Fragment implements WebContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         View web = inflater.inflate(R.layout.fragment_web, container, false);
+        ButterKnife.bind(this, web);
         initToolBar();
-        initWebView();
         initFab();
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
         return web;
     }
 
 
     private void initFab() {
-        mWebFabForward.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton webFabForward = (FloatingActionButton) getActivity().findViewById(R.id.web_fab_forward);
+        FloatingActionButton webFabBack = (FloatingActionButton) getActivity().findViewById(R.id.web_fab_back);
+        webFabForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.goForward(mWebContent);
             }
         });
-        mWebFabBack.setOnClickListener(new View.OnClickListener() {
+        webFabBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPresenter.goBack(mWebContent);
@@ -98,8 +99,8 @@ public class WebFragment extends Fragment implements WebContract.View {
 
 
     private void initWebView() {
-        mWebContent.canGoBack();
-        int progress = mWebContent.getProgress();
+        WebSettings settings = mWebContent.getSettings();
+        settings.getJavaScriptEnabled();
         mWebContent.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -111,6 +112,13 @@ public class WebFragment extends Fragment implements WebContract.View {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 mWebProgress.setVisibility(View.INVISIBLE);
+            }
+        });
+        mWebContent.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                mPresenter.updateProgress(newProgress);
             }
         });
         mWebContent.setElevation(5);

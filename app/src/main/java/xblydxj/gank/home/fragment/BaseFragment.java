@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by 46321 on 2016/7/16/016.
  */
-public class BaseFragment extends Fragment implements BaseContract.View {
+public abstract class BaseFragment extends Fragment implements BaseContract.View {
 
     @Bind(R.id.recycler)
     RecyclerView mRecycler;
@@ -43,7 +43,10 @@ public class BaseFragment extends Fragment implements BaseContract.View {
 
     private List<dataCatch> list = new ArrayList<>();
 
-    public NormalRecyclerAdapter mAdapter = new NormalRecyclerAdapter(list);
+    public NormalRecyclerAdapter mAdapter = getTypeAdapter(list);
+
+    public abstract NormalRecyclerAdapter getTypeAdapter(List<dataCatch> list);
+
     public BaseContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
     private View mContentView;

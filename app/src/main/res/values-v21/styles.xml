@@ -17,15 +17,18 @@
 
 <resources>
 
-    <style name="AppTheme" parent="Base.Theme.DesignDemo">
+    <style name="AppTheme" parent="ViewerTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:navigationBarColor">#26a69a</item>
         <!--<item name="android:navigationBarColor">@color/accent_material_light</item>-->
     </style>
 
-    <style name="ViewerTheme" parent="ViewerThemeBase">
+    <style name="ViewerTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
     </style>
 

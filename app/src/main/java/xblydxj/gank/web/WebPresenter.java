@@ -53,6 +53,11 @@ public class WebPresenter implements WebContract.Presenter {
     }
 
     @Override
+    public void updateProgress(int progress) {
+        mWebView.updateProgress(progress);
+    }
+
+    @Override
     public void subscribe() {
         mSubscriptions.clear();
         List<String> content = new ArrayList<>();

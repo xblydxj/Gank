@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by 46321 on 2016/7/18/018.
  */
-public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /*******
      * 普通类型item与底部item
      ********/
@@ -39,7 +39,7 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     //条目点击回调
     public interface OnItemClickListener {
-        void OnItemClick(String url,String desc);
+        void OnItemClick(String url, String desc);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -52,8 +52,7 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            return new ItemViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycler_item, parent, false));
+            return getTypeLayout(parent);
         } else if (viewType == TYPE_FOOTER) {
             return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
@@ -62,20 +61,21 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return null;
     }
 
+    public abstract RecyclerView.ViewHolder getTypeLayout(ViewGroup parent);
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == TYPE_ITEM) {
+        if (getItemViewType(position) == TYPE_ITEM && list.size() != 0) {
             Logger.d("item:" + position);
             final dataCatch result = list.get(position);
-            String author = result.getAuthor();
-            if (author.equals("")) {
+            if (result.getAuthor() == null) {
                 ((ItemViewHolder) holder).Author.setVisibility(View.INVISIBLE);
             } else {
                 ((ItemViewHolder) holder).Author.setVisibility(View.VISIBLE);
-                ((ItemViewHolder) holder).Author.setText(author);
+                ((ItemViewHolder) holder).Author.setText(result.getAuthor());
             }
             ((ItemViewHolder) holder).Describe.setText(result.getDesc());
-            //publishedAt : 2016-07-15T11:56:07.907Z
+            //publishedAt : 2016-07-15 11:56:07.907Z
             String Date = result.getTime();
             String day = Date.substring(0, 19).replace('T', ' ');
             ((ItemViewHolder) holder).Date.setText(day);
@@ -83,7 +83,7 @@ public class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mOnItemClickListener.OnItemClick(result.getUrl(),result.getDesc());
+                        mOnItemClickListener.OnItemClick(result.getUrl(), result.getDesc());
                     }
                 });
             }

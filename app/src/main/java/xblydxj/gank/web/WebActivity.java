@@ -39,4 +39,10 @@ public class WebActivity extends AppCompatActivity {
         }
         new WebPresenter(url, desc, webFragment);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

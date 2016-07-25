@@ -25,5 +25,7 @@ public class WebContract {
         void goForward(WebView view);
 
         void goBack(WebView view);
+
+        void updateProgress(int progress);
     }
 }

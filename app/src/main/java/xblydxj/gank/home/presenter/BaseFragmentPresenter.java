@@ -132,9 +132,8 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.e(e, "error");
                         mBaseView.stopRefreshing();
-                        mBaseView.updateStatus(STATUS_ERROR);
+                        Logger.e(e, "error");
                         e.printStackTrace();
                     }
 
@@ -176,6 +175,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void updateData() {
         getRetrofitData(1);
+        mBaseView.stopRefreshing();
     }
 
     @Override
@@ -187,5 +187,6 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void upPullLoad(int listSize) {
         getRetrofitData((listSize / 10) + 1);
+        mBaseView.stopRefreshing();
     }
 }
