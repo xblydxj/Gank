@@ -43,6 +43,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     private static final String DESC = "DESC";
 
     private baseModel mBaseModel = new baseModel();
+    private boolean mIsEmpty;
 
 
     public BaseFragmentPresenter(BaseContract.View baseView, String type) {
@@ -80,10 +81,13 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
         if (NetWorkUtil.isNetWorkAvailable(AppConfig.sContext)) {
             Logger.d("1.1");
             if (!catchDatas.isEmpty()) {
+                mIsEmpty = false;
                 Logger.d("1.2");
                 mBaseView.updateAdapter(catchDatas);
                 mBaseView.updateStatus(STATUS_SUCCESS);
                 mBaseView.stopRefreshing();
+            }else {
+                mIsEmpty = true;
             }
             Logger.d("1.3");
             mSubscription.clear();
@@ -133,6 +137,10 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mBaseView.stopRefreshing();
+                        if (mIsEmpty) {
+                            mBaseView.updateStatus(STATUS_ERROR);
+                        }
+                        mBaseView.showSnack();
                         Logger.e(e, "error");
                         e.printStackTrace();
                     }
@@ -175,7 +183,6 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void updateData() {
         getRetrofitData(1);
-        mBaseView.stopRefreshing();
     }
 
     @Override
@@ -187,6 +194,5 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     @Override
     public void upPullLoad(int listSize) {
         getRetrofitData((listSize / 10) + 1);
-        mBaseView.stopRefreshing();
     }
 }

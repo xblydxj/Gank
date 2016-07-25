@@ -19,6 +19,7 @@ public class WebPresenter implements WebContract.Presenter {
     private String url;
     private String desc;
     private CompositeSubscription mSubscriptions;
+    private int mPreProgress = 0;
 
     public WebPresenter(String url, String desc,
                         WebContract.View webView) {
@@ -36,25 +37,28 @@ public class WebPresenter implements WebContract.Presenter {
 
     @Override
     public void goForward(WebView view) {
-        if(view.canGoForward()){
+        if (view.canGoForward()) {
             view.goForward();
-        }else{
-            SnackUtils.showSnackShort(view,"已经是最后一页了~！");
+        } else {
+            SnackUtils.showSnackShort(view, "已经是最后一页了~！");
         }
     }
 
     @Override
     public void goBack(WebView view) {
-        if(view.canGoBack()){
+        if (view.canGoBack()) {
             view.goBack();
-        }else{
-            SnackUtils.showSnackShort(view,"这就是第一页~！");
+        } else {
+            SnackUtils.showSnackShort(view, "这就是第一页~！");
         }
     }
 
     @Override
     public void updateProgress(int progress) {
-        mWebView.updateProgress(progress);
+        if (mPreProgress != progress) {
+            mWebView.updateProgress(progress);
+        }
+        mPreProgress = progress;
     }
 
     @Override

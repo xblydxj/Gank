@@ -21,6 +21,8 @@ public class BaseContract {
         void updateStatus(int status);
 
         void intentToWeb(Intent intent);
+
+        void showSnack();
     }
 
     public interface Presenter extends BasePresenter {

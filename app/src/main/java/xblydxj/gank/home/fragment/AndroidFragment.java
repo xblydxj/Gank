@@ -14,7 +14,6 @@ import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
 public class AndroidFragment extends BaseFragment {
     public AndroidFragment() {}
 
-
     private static class AndroidFragmentHolder {
         static AndroidFragment instance = new AndroidFragment();
     }

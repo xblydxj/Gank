@@ -18,6 +18,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
@@ -101,6 +103,9 @@ public class WebFragment extends Fragment implements WebContract.View {
     private void initWebView() {
         WebSettings settings = mWebContent.getSettings();
         settings.getJavaScriptEnabled();
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
         mWebContent.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -114,7 +119,7 @@ public class WebFragment extends Fragment implements WebContract.View {
                 mWebProgress.setVisibility(View.INVISIBLE);
             }
         });
-        mWebContent.setWebChromeClient(new WebChromeClient(){
+        mWebContent.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -136,6 +141,7 @@ public class WebFragment extends Fragment implements WebContract.View {
                 getActivity().onBackPressed();
             }
         });
+        mToolBar.inflateMenu(R.menu.web_toolbar_menu);
         mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -166,6 +172,9 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     @Override
     public void updateProgress(int progress) {
-        mWebProgress.setProgress(progress);
+        Logger.d("progress:" + progress);
+        if (mWebProgress != null) {
+            mWebProgress.setProgress(progress);
+        }
     }
 }

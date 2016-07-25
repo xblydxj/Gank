@@ -11,22 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <!--<android.support.v4.widget.NestedScrollView-->
 
-            <!--android:id="@+id/nestedScroll"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-            <!---->
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:isScrollContainer="false"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:layoutManager="LinearLayoutManager"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <!--</android.support.v4.widget.NestedScrollView>-->
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </xblydxj.gank.manager.uimanager.LoadStatus>

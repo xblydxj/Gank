@@ -26,6 +26,7 @@ import xblydxj.gank.db.dataCatch;
 import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
+import xblydxj.gank.utils.SnackUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -78,7 +79,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
             savedInstanceState) {
         mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
-
         ButterKnife.bind(this, mContentView);
 
         mRefresh.setColorSchemeColors(
@@ -148,5 +148,10 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
     @Override
     public void intentToWeb(Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public void showSnack() {
+        SnackUtils.showSnackShort(mRefresh,"刷新失败~");
     }
 }
