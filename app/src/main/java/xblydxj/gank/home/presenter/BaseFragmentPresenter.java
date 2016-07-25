@@ -86,7 +86,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                 mBaseView.updateAdapter(catchDatas);
                 mBaseView.updateStatus(STATUS_SUCCESS);
                 mBaseView.stopRefreshing();
-            }else {
+            } else {
                 mIsEmpty = true;
             }
             Logger.d("1.3");
@@ -103,23 +103,6 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
                 mBaseView.updateStatus(STATUS_ERROR);
             }
         }
-
-
-       /* if(网络可用){
-            if(本地存在对应缓存){
-                在界面中先设置本地数据；
-            }
-            发出网络请求。
-            网络请求数据存储到本地。
-            等网络请求结束用新的数据刷新界面。
-        }else{
-            if(本地存在对应缓存){
-                在界面中设置本地数据；
-            }else{
-                界面中提示没有数据，或者网络不可用。
-            }
-        }*/
-
     }
 
     private Subscription getRetrofitData(final int page) {

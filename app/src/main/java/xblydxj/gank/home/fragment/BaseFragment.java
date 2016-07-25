@@ -79,8 +79,9 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
             savedInstanceState) {
         mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
-        ButterKnife.bind(this, mContentView);
-
+        mLoadStatus.addView(mContentView, 0);
+        Logger.d("count:"+mLoadStatus.getChildCount());
+        ButterKnife.bind(this, mLoadStatus);
         mRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.md_red_400_color_code),
                 ContextCompat.getColor(getActivity(), R.color.md_yellow_400_color_code),
@@ -89,7 +90,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         initListener();
         mRecycler.setAdapter(mAdapter);
-        return mContentView;
+        return mLoadStatus;
     }
 
     private void initListener() {
@@ -142,7 +143,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
 
     @Override
     public void updateStatus(int status) {
-        ((LoadStatus) mContentView).updateView(status);
+        mLoadStatus.updateView(status);
     }
 
     @Override

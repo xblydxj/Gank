@@ -145,8 +145,8 @@ public class WebFragment extends Fragment implements WebContract.View {
         mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mPresenter.share();
-                SnackUtils.showSnackLong(mToolBar, "share", "i see");
+                mPresenter.showShare(getActivity());
+                SnackUtils.showSnackLong(mToolBar, "showShare", "i see");
                 return true;
             }
         });
@@ -156,6 +156,7 @@ public class WebFragment extends Fragment implements WebContract.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mWebContent.destroy();
         ButterKnife.unbind(this);
     }
 
@@ -168,7 +169,6 @@ public class WebFragment extends Fragment implements WebContract.View {
     public void showWeb(String url) {
         mWebContent.loadUrl(url);
     }
-
 
     @Override
     public void updateProgress(int progress) {

@@ -1,5 +1,6 @@
 package xblydxj.gank.web;
 
+import android.content.Context;
 import android.webkit.WebView;
 
 import xblydxj.gank.BasePresenter;
@@ -20,7 +21,7 @@ public class WebContract {
 
     public interface Presenter extends BasePresenter{
 
-        void share();
+        void showShare(Context context);
 
         void goForward(WebView view);
 

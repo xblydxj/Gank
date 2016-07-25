@@ -9,13 +9,13 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.db.dataCatch;
-import xblydxj.gank.utils.DBUtils;
+import xblydxj.gank.manager.dbmanager.DBManager;
 
 /**
  * Created by 46321 on 2016/7/23/023.
  */
 public class baseModel {
-    private DBUtils mDBUtils = new DBUtils(AppConfig.sContext);
+    private DBManager mDBUtils = new DBManager(AppConfig.sContext);
 
 
     /* if(网络可用){

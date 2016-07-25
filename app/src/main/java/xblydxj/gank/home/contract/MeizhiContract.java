@@ -1,0 +1,29 @@
+package xblydxj.gank.home.contract;
+
+import java.util.List;
+
+import xblydxj.gank.BasePresenter;
+import xblydxj.gank.BaseView;
+import xblydxj.gank.db.dataCatch;
+
+/**
+ * Created by 46321 on 2016/7/25/025.
+ */
+public class MeizhiContract {
+    public interface View extends BaseView<Presenter>{
+
+        void updateAdapter(List<dataCatch> data);
+
+        void stopRefreshing();
+
+        void updateStatus(int status);
+
+        void showSnack();
+    }
+    public interface Presenter extends BasePresenter{
+
+        void updateData();
+
+        void reconnect();
+    }
+}

@@ -1,4 +1,4 @@
-package xblydxj.gank.utils;
+package xblydxj.gank.manager.dbmanager;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,9 +18,9 @@ import xblydxj.gank.db.dataCatchDao;
 /**
  * Created by 46321 on 2016/7/23/023.
  */
-public class DBUtils {
+public class DBManager {
     private dataCatchDao dao;
-    public DBUtils(Context context){
+    public DBManager(Context context){
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "datacatch.db", null);
         SQLiteDatabase database = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(database);

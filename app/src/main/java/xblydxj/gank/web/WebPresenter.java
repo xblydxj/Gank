@@ -1,10 +1,13 @@
 package xblydxj.gank.web;
 
+import android.content.Context;
 import android.webkit.WebView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -31,8 +34,18 @@ public class WebPresenter implements WebContract.Presenter {
     }
 
     @Override
-    public void share() {
-        //TODO share
+    public void showShare(Context context) {
+        ShareSDK.initSDK(context);
+        OnekeyShare oks = new OnekeyShare();
+        oks.disableSSOWhenAuthorize();
+        oks.setTitle("来不及解释了，快上车！");
+        oks.setTitleUrl(url);
+        oks.setText(desc);
+        oks.setUrl(url);
+        oks.setComment("gank.io倾情分享");
+        oks.setSite(desc);
+        oks.setSiteUrl(url);
+        oks.show(context);
     }
 
     @Override
