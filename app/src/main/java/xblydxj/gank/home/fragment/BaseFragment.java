@@ -22,7 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;

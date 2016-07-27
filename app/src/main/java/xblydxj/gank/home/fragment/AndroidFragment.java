@@ -4,7 +4,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 import xblydxj.gank.home.adapter.AndroidAdapter;
 import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
 

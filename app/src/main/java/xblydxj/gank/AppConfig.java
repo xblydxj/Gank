@@ -15,9 +15,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import xblydxj.gank.api.URL;
-import xblydxj.gank.db.DaoMaster;
-import xblydxj.gank.db.DaoSession;
-import xblydxj.gank.db.dataCatchDao;
+import xblydxj.gank.db.normalData.DaoMaster;
+import xblydxj.gank.db.normalData.DaoSession;
+import xblydxj.gank.db.normalData.dataCatchDao;
 
 /**
  * Created by 46321 on 2016/7/16/016.

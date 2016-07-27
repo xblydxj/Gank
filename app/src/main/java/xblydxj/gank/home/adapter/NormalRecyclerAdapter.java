@@ -14,7 +14,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -66,7 +66,6 @@ public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_ITEM && list.size() != 0) {
-            Logger.d("item:" + position);
             final dataCatch result = list.get(position);
             if (result.getAuthor() == null) {
                 ((ItemViewHolder) holder).Author.setVisibility(View.INVISIBLE);
@@ -88,7 +87,6 @@ public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<Recycle
                 });
             }
         } else {
-            Logger.d("111:" + position);
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
             if (mOnUpPull != null) {

@@ -6,7 +6,7 @@ import java.util.List;
 
 import xblydxj.gank.BasePresenter;
 import xblydxj.gank.BaseView;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 
 /**
  * Created by 46321 on 2016/7/21/021.

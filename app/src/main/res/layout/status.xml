@@ -5,12 +5,14 @@
 
     <ProgressBar
         android:id="@+id/loading"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
     <LinearLayout
         android:id="@+id/error"
+        android:visibility="gone"
         android:translationZ="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

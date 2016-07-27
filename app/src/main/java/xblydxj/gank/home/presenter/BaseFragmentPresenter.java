@@ -16,7 +16,7 @@ import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.api.DataApi;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.home.model.baseModel;
 import xblydxj.gank.utils.NetWorkUtil;
@@ -65,7 +65,6 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
     @Override
     public void subscribe() {
-        mRetrofit = AppConfig.sRetrofit.create(DataApi.class);
         initialData(true);
     }
 

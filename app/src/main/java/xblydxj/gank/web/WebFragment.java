@@ -126,8 +126,6 @@ public class WebFragment extends Fragment implements WebContract.View {
                 mPresenter.updateProgress(newProgress);
             }
         });
-        mWebContent.setElevation(5);
-
     }
 
     private void initToolBar() {

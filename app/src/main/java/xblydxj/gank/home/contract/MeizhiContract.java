@@ -4,15 +4,16 @@ import java.util.List;
 
 import xblydxj.gank.BasePresenter;
 import xblydxj.gank.BaseView;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.Meizhi.Meizhi;
 
 /**
  * Created by 46321 on 2016/7/25/025.
+ *
  */
 public class MeizhiContract {
     public interface View extends BaseView<Presenter>{
 
-        void updateAdapter(List<dataCatch> data);
+        void updateAdapter(List<Meizhi> data);
 
         void stopRefreshing();
 
@@ -25,5 +26,7 @@ public class MeizhiContract {
         void updateData();
 
         void reconnect();
+
+        void loadMore(int size);
     }
 }

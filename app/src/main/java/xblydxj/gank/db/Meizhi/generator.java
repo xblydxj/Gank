@@ -1,4 +1,4 @@
-package xblydxj.gank.db;
+package xblydxj.gank.db.Meizhi;
 
 
 import de.greenrobot.daogenerator.DaoGenerator;
@@ -11,14 +11,11 @@ import de.greenrobot.daogenerator.Schema;
  */
 public class generator {
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1,"xblydxj.gank.db");
-        Entity entity = schema.addEntity("dataCatch");
+        Schema schema = new Schema(1,"xblydxj.gank.db.Meizhi");
+        Entity entity = schema.addEntity("Meizhi");
         entity.addIdProperty();
-        entity.addStringProperty("desc");
         entity.addStringProperty("time");
-        entity.addStringProperty("author");
-        entity.addStringProperty("url");
-        entity.addStringProperty("type");
+        entity.addStringProperty("url").unique();
         new DaoGenerator().generateAll(schema,"F:\\gank\\Gank\\app\\src\\main\\java");
     }
 }

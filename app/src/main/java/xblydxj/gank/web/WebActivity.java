@@ -16,6 +16,7 @@ public class WebActivity extends AppCompatActivity {
 
     private static final String URL = "URL";
     private static final String DESC = "DESC";
+    private WebFragment mWebFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,19 +31,20 @@ public class WebActivity extends AppCompatActivity {
         String url = intent.getStringExtra(URL);
         String desc = intent.getStringExtra(DESC);
 
-        WebFragment webFragment = (WebFragment) getSupportFragmentManager().findFragmentById(R.id.web_frame_fragment);
-        if (webFragment == null) {
-            webFragment = WebFragment.newInstance(url, desc);
+        mWebFragment = (WebFragment) getSupportFragmentManager().findFragmentById(R.id.web_frame_fragment);
+        if (mWebFragment == null) {
+            mWebFragment = WebFragment.newInstance(url, desc);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.web_frame_fragment, webFragment);
+            transaction.add(R.id.web_frame_fragment, mWebFragment);
             transaction.commit();
         }
-        new WebPresenter(url, desc, webFragment);
+        new WebPresenter(url, desc, mWebFragment);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+//        mWebFragment = null;
         finish();
     }
 }

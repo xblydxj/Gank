@@ -26,6 +26,7 @@ import xblydxj.gank.home.fragment.VideoFragment;
 import xblydxj.gank.home.presenter.AndroidPresenter;
 import xblydxj.gank.home.presenter.FrontEndPresenter;
 import xblydxj.gank.home.presenter.IOSPresenter;
+import xblydxj.gank.home.presenter.MeizhiPresenter;
 
 /**
  * Created by xblydxj on 2016/7/16/016.
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
         new AndroidPresenter(mAndroidFragment);
         new IOSPresenter(mIosFragment);
         new FrontEndPresenter(mFrontEndFragment);
+        new MeizhiPresenter(mMeizhiFragment);
     }
 
     private void initListener() {

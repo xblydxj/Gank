@@ -21,8 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
-import xblydxj.gank.bean.Meizhi;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.Meizhi.Meizhi;
 import xblydxj.gank.home.adapter.MeizhiAdapter;
 import xblydxj.gank.home.contract.MeizhiContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
@@ -42,21 +41,16 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
     @Bind(R.id.error_reconnect)
     Button reconnect;
 
-    private List<dataCatch> list = new ArrayList<>();
-
     private List<Meizhi> meizhis = new ArrayList<>();
-    public MeizhiAdapter mAdapter = new MeizhiAdapter(getActivity(), meizhis);
-
-    public MeizhiAdapter mMeizhiAdapter = new MeizhiAdapter(getActivity(),meizhis);
+    public MeizhiAdapter mAdapter = new MeizhiAdapter(AppConfig.sContext,meizhis);
 
     public MeizhiContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
-    private View mContentView;
 
     @Override
     public void onResume() {
         super.onResume();
-        if (list.size() == 0) {
+        if (meizhis.size() == 0) {
             mPresenter.subscribe();
         }
     }
@@ -78,9 +72,9 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
+        View contentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
-        mLoadStatus.addView(mContentView, 0);
+        mLoadStatus.addView(contentView, 0);
         Logger.d("count:"+mLoadStatus.getChildCount());
         ButterKnife.bind(this, mLoadStatus);
         mRefresh.setColorSchemeColors(
@@ -90,7 +84,7 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
         );
         mRecycler.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         initListener();
-        mRecycler.setAdapter(mMeizhiAdapter);
+        mRecycler.setAdapter(mAdapter);
         return mLoadStatus;
     }
 
@@ -98,30 +92,33 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                list.clear();
+                meizhis.clear();
                 mPresenter.updateData();
             }
         });
 
-        mMeizhiAdapter.setOnMeizhiClickListener(new MeizhiAdapter.OnMeizhiClickListener() {
+        mAdapter.setOnMeizhiClickListener(new MeizhiAdapter.OnMeizhiClickListener() {
             @Override
             public void meizhiClickListener(View view, int position) {
-
+                //TODO
             }
+        });
 
+        mAdapter.setOnLoadMore(new MeizhiAdapter.OnLoadMore() {
             @Override
-            public void meizhiLongClickListener(View view, int position) {
-
+            public void loadMore(int size) {
+                mPresenter.loadMore(size);
             }
         });
         reconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                list.clear();
+                meizhis.clear();
                 Logger.d("onclick");
                 mPresenter.reconnect();
             }
         });
+
     }
 
 
@@ -132,9 +129,9 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
 
 
     @Override
-    public void updateAdapter(List<dataCatch> data) {
-        list.addAll(data);
-        mAdapter.notifyDataSetChanged();
+    public void updateAdapter(List<Meizhi> data) {
+        meizhis.addAll(data);
+//        mAdapter.notifyDataSetChanged();
     }
 
     @Override

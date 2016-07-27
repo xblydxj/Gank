@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import xblydxj.gank.R;
-import xblydxj.gank.db.dataCatch;
+import xblydxj.gank.db.normalData.dataCatch;
 
 /**
  * Created by 46321 on 2016/7/25/025.
