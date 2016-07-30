@@ -46,4 +46,12 @@ public class DBManager4Meizhi {
     public List<Meizhi> query() {
         return dao.queryBuilder().list();
     }
+
+    public boolean queryExsited(Meizhi meizhi){
+        List<Meizhi> meizhis = dao.queryRaw(meizhi.getUrl());
+        if (meizhis.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

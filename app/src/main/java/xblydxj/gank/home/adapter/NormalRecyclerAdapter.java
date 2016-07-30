@@ -48,7 +48,6 @@ public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<Recycle
         mOnItemClickListener = onItemClickListener;
     }
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {

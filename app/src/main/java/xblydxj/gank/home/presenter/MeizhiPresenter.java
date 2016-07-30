@@ -1,7 +1,5 @@
 package xblydxj.gank.home.presenter;
 
-import android.database.sqlite.SQLiteConstraintException;
-
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -154,11 +152,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 .map(new Func1<List<Meizhi>, List<Meizhi>>() {
                     @Override
                     public List<Meizhi> call(List<Meizhi> meizhis) {
-                        try {
-                            mMeizhiModel.putMeizhisToDB(meizhis);
-                        } catch (SQLiteConstraintException e) {
-                            Logger.e(e,"unique");
-                        }
+                        mMeizhiModel.putMeizhisToDB(meizhis);
                         return mMeizhiModel.isCatchExist();
                     }
                 })
