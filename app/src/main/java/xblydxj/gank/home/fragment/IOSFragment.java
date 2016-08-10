@@ -4,9 +4,10 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import xblydxj.gank.bean.Data;
 import xblydxj.gank.db.normalData.dataCatch;
 import xblydxj.gank.home.adapter.IOSAdapter;
-import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
+import xblydxj.gank.home.adapter.BaseRecyclerAdapter;
 
 /**
  * Created by xblydxj on 2016/7/16/016.
@@ -23,7 +24,7 @@ public class IOSFragment extends BaseFragment{
         return IOSFragmentHolder.instance;
     }
     @Override
-    public NormalRecyclerAdapter getTypeAdapter(List<dataCatch> list) {
+    public BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list) {
         return new IOSAdapter(list);
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import xblydxj.gank.BasePresenter;
 import xblydxj.gank.BaseView;
-import xblydxj.gank.db.normalData.dataCatch;
+import xblydxj.gank.bean.Data;
 
 /**
  * Created by 46321 on 2016/7/21/021.
@@ -14,7 +14,7 @@ import xblydxj.gank.db.normalData.dataCatch;
 public class BaseContract {
     public interface View extends BaseView<Presenter> {
 
-        void updateAdapter(List<dataCatch> data);
+        void updateAdapter(List<Data.ResultsBean> data);
 
         void stopRefreshing();
 

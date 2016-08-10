@@ -12,13 +12,15 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <xblydxj.gank.widget.MeizhiImage
+            android:src="@drawable/default_image"
             android:id="@+id/meizhi"
             android:scaleType="fitXY"
+            android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher">
-        </ImageView>
+            >
+        </xblydxj.gank.widget.MeizhiImage>
 
         <TextView
             android:layout_width="wrap_content"

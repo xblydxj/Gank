@@ -1,5 +1,6 @@
 package xblydxj.gank.home.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -19,20 +23,22 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
-import xblydxj.gank.db.Meizhi.Meizhi;
-import xblydxj.gank.home.adapter.MeizhiAdapter;
+import xblydxj.gank.bean.Data;
 import xblydxj.gank.home.contract.MeizhiContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.utils.SnackUtils;
+import xblydxj.gank.widget.MeizhiImage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by 46321 on 2016/7/16/016.
+ *
  */
-public class MeizhiFragment extends Fragment implements MeizhiContract.View{
+public class MeizhiFragment extends Fragment implements MeizhiContract.View {
 
     @Bind(R.id.recycler)
     RecyclerView mRecycler;
@@ -41,8 +47,8 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
     @Bind(R.id.error_reconnect)
     Button reconnect;
 
-    private List<Meizhi> meizhis = new ArrayList<>();
-    public MeizhiAdapter mAdapter = new MeizhiAdapter(AppConfig.sContext,meizhis);
+    private List<Data.ResultsBean> meizhis = new ArrayList<>();
+    public MeizhiAdapter mAdapter = new MeizhiAdapter(AppConfig.sContext, meizhis);
 
     public MeizhiContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
@@ -75,14 +81,14 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
         View contentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
         mLoadStatus.addView(contentView, 0);
-        Logger.d("count:"+mLoadStatus.getChildCount());
         ButterKnife.bind(this, mLoadStatus);
         mRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.md_red_400_color_code),
                 ContextCompat.getColor(getActivity(), R.color.md_yellow_400_color_code),
                 ContextCompat.getColor(getActivity(), R.color.md_green_400_color_code)
         );
-        mRecycler.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        mRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        mRecycler.setItemAnimator(null);
         initListener();
         mRecycler.setAdapter(mAdapter);
         return mLoadStatus;
@@ -96,20 +102,6 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
                 mPresenter.updateData();
             }
         });
-
-        mAdapter.setOnMeizhiClickListener(new MeizhiAdapter.OnMeizhiClickListener() {
-            @Override
-            public void meizhiClickListener(View view, int position) {
-                //TODO
-            }
-        });
-
-        mAdapter.setOnLoadMore(new MeizhiAdapter.OnLoadMore() {
-            @Override
-            public void loadMore(int size) {
-                mPresenter.loadMore(size);
-            }
-        });
         reconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +110,6 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
                 mPresenter.reconnect();
             }
         });
-
     }
 
 
@@ -129,9 +120,9 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
 
 
     @Override
-    public void updateAdapter(List<Meizhi> data) {
+    public void updateAdapter(List<Data.ResultsBean> data) {
         meizhis.addAll(data);
-//        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -146,6 +137,64 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View{
 
     @Override
     public void showSnack() {
-        SnackUtils.showSnackShort(mRefresh,"刷新失败~");
+        SnackUtils.showSnackShort(mRefresh, "刷新失败~");
+    }
+
+
+    class MeizhiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private List<Data.ResultsBean> mMeizhis;
+        private Context mContext;
+
+        public MeizhiAdapter(Context context, List<Data.ResultsBean> list) {
+            this.mContext = context;
+            this.mMeizhis = list;
+            Logger.d("list:" + list.size());
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new meizhiViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.recycler_item_meizhi, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            Data.ResultsBean resultsBean = meizhis.get(position);
+            int width = resultsBean.getBitmapWidth();
+            int height = resultsBean.getBitmapHeight();
+            ((meizhiViewHolder) holder).mImageView.setOriginal(width,height);
+            Glide.with(mContext).load(meizhis.get(position).getUrl())
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(((meizhiViewHolder) holder).mImageView);
+            ((meizhiViewHolder) holder).time.setText(meizhis.get(position).getPublishedAt());
+            if (position == (mMeizhis.size() - 1)) {
+                mPresenter.loadMore(position);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return mMeizhis.size();
+        }
+
+        public class meizhiViewHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.meizhi)
+            MeizhiImage mImageView;
+            @Bind(R.id.time)
+            TextView time;
+
+            @OnClick(R.id.meizhi)
+            public void onClick(View view) {
+                mPresenter.toPhotoView(mMeizhis.get(getAdapterPosition()));
+            }
+
+            public meizhiViewHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+        }
     }
 }

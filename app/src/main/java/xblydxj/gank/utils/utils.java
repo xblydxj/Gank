@@ -25,4 +25,9 @@ public class Utils {
         }
         return mWm.getDefaultDisplay().getHeight();
     }
+
+    public static void runOnUIThread(Runnable runnable){
+        AppConfig.sHandler.post(runnable);
+    }
+
 }

@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import xblydxj.gank.R;
-import xblydxj.gank.db.normalData.dataCatch;
+import xblydxj.gank.bean.Data;
+
 
 /**
  * Created by 46321 on 2016/7/25/025.
  */
-public class AndroidAdapter extends NormalRecyclerAdapter {
-    public AndroidAdapter(List<dataCatch> data) {
+public class AndroidAdapter extends BaseRecyclerAdapter {
+    public AndroidAdapter(List<Data.ResultsBean> data) {
         super(data);
     }
 

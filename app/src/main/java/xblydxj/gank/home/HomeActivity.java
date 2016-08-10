@@ -30,6 +30,7 @@ import xblydxj.gank.home.presenter.MeizhiPresenter;
 
 /**
  * Created by xblydxj on 2016/7/16/016.
+ *
  */
 public class HomeActivity extends AppCompatActivity {
     @Bind(R.id.home_view_pager)
@@ -118,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         mFragments.add(new PagerInfo(titles[1], mAndroidFragment));
         mFragments.add(new PagerInfo(titles[2], mIosFragment));
         mFragments.add(new PagerInfo(titles[3], mFrontEndFragment));
-        mFragments.add(new PagerInfo(titles[4], mVideoFragment));
+
     }
 
     private void initToolbar() {

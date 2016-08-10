@@ -22,8 +22,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
+import xblydxj.gank.bean.Data;
 import xblydxj.gank.db.normalData.dataCatch;
-import xblydxj.gank.home.adapter.NormalRecyclerAdapter;
+import xblydxj.gank.home.adapter.BaseRecyclerAdapter;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.utils.SnackUtils;
@@ -42,11 +43,11 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
     @Bind(R.id.error_reconnect)
     Button reconnect;
 
-    private List<dataCatch> list = new ArrayList<>();
+    private List<Data.ResultsBean> list = new ArrayList<>();
 
-    public NormalRecyclerAdapter mAdapter = getTypeAdapter(list);
+    public BaseRecyclerAdapter mAdapter = getTypeAdapter(list);
 
-    public abstract NormalRecyclerAdapter getTypeAdapter(List<dataCatch> list);
+    public abstract BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list);
 
     public BaseContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
@@ -101,13 +102,13 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
                 mPresenter.updateData();
             }
         });
-        mAdapter.setOnItemClickListener(new NormalRecyclerAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(String url,String desc) {
                 mPresenter.toWeb(url,desc);
             }
         });
-        mAdapter.setOnUpPull(new NormalRecyclerAdapter.OnUpPull() {
+        mAdapter.setOnUpPull(new BaseRecyclerAdapter.OnUpPull() {
             @Override
             public void upPullLoad(int size) {
                 mPresenter.upPullLoad(size);
@@ -131,7 +132,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
 
 
     @Override
-    public void updateAdapter(List<dataCatch> data) {
+    public void updateAdapter(List<Data.ResultsBean> data) {
         list.addAll(data);
         mAdapter.notifyDataSetChanged();
     }

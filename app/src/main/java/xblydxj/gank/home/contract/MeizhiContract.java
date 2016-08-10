@@ -4,7 +4,7 @@ import java.util.List;
 
 import xblydxj.gank.BasePresenter;
 import xblydxj.gank.BaseView;
-import xblydxj.gank.db.Meizhi.Meizhi;
+import xblydxj.gank.bean.Data;
 
 /**
  * Created by 46321 on 2016/7/25/025.
@@ -13,7 +13,7 @@ import xblydxj.gank.db.Meizhi.Meizhi;
 public class MeizhiContract {
     public interface View extends BaseView<Presenter>{
 
-        void updateAdapter(List<Meizhi> data);
+        void updateAdapter(List<Data.ResultsBean> data);
 
         void stopRefreshing();
 
@@ -28,5 +28,8 @@ public class MeizhiContract {
         void reconnect();
 
         void loadMore(int size);
+
+        void toPhotoView(Data.ResultsBean meizhi);
+
     }
 }

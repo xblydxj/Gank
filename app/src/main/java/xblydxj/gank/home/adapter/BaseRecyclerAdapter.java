@@ -14,25 +14,24 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import xblydxj.gank.R;
-import xblydxj.gank.db.normalData.dataCatch;
+import xblydxj.gank.bean.Data;
+
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by 46321 on 2016/7/18/018.
  */
-public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    /*******
-     * 普通类型item与底部item
-     ********/
+public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
 
-    private List<dataCatch> list = new ArrayList<>();
+    private List<Data.ResultsBean> list = new ArrayList<>();
 
 
-    public NormalRecyclerAdapter(List<dataCatch> data) {
+    public BaseRecyclerAdapter(List<Data.ResultsBean> data) {
         list = checkNotNull(data);
     }
 
@@ -65,23 +64,23 @@ public abstract class NormalRecyclerAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_ITEM && list.size() != 0) {
-            final dataCatch result = list.get(position);
-            if (result.getAuthor() == null) {
+            final Data.ResultsBean resultsBean = list.get(position);
+            if (resultsBean.getWho() == null) {
                 ((ItemViewHolder) holder).Author.setVisibility(View.INVISIBLE);
             } else {
                 ((ItemViewHolder) holder).Author.setVisibility(View.VISIBLE);
-                ((ItemViewHolder) holder).Author.setText(result.getAuthor());
+                ((ItemViewHolder) holder).Author.setText(resultsBean.getWho());
             }
-            ((ItemViewHolder) holder).Describe.setText(result.getDesc());
+            ((ItemViewHolder) holder).Describe.setText(resultsBean.getDesc());
             //publishedAt : 2016-07-15 11:56:07.907Z
-            String Date = result.getTime();
+            String Date = resultsBean.getPublishedAt();
             String day = Date.substring(0, 19).replace('T', ' ');
             ((ItemViewHolder) holder).Date.setText(day);
             if (mOnItemClickListener != null) {
                 ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mOnItemClickListener.OnItemClick(result.getUrl(), result.getDesc());
+                        mOnItemClickListener.OnItemClick(resultsBean.getUrl(), resultsBean.getDesc());
                     }
                 });
             }

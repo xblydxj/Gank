@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:isScrollContainer="false"
-            app:layoutManager="LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>

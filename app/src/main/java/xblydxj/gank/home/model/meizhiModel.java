@@ -17,9 +17,9 @@ public class meizhiModel {
     }
 
     public void putMeizhisToDB(List<Meizhi> images) {
-        for (Meizhi image : images) {
-            mDBUtils
-        }
+//        for (Meizhi image : images) {
+//            mDBUtils
+//        }
         mDBUtils.addmeizhi(images);
     }
 }

@@ -8,15 +8,16 @@ import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.api.DataApi;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.db.normalData.dataCatch;
 import xblydxj.gank.home.contract.BaseContract;
 import xblydxj.gank.home.model.baseModel;
 import xblydxj.gank.utils.NetWorkUtil;
@@ -129,13 +130,43 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
                     @Override
                     public void onNext(Data data) {
-                        List<dataCatch> list = toDataCatch(data);
                         mBaseView.updateAdapter(list);
                         if (page == 1) {
                             mBaseModel.putListToDB(list, mType);
                         } else {
                             mBaseModel.putListToDBNotDelete(list, mType);
                         }
+                    }
+                })new Subscriber<Data.ResultsBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Data.ResultsBean resultsBean) {
+
+                    }
+                });
+        new Subscriber<Data>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Data data) {
+
                     }
                 });
     }

@@ -42,7 +42,4 @@ public class baseModel {
     public void putListToDBNotDelete(List<dataCatch> datas, final String type) {
         mDBUtils.addData(datas);
     }
-
-
-
 }

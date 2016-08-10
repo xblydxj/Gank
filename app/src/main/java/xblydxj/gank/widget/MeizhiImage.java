@@ -6,8 +6,12 @@ import android.widget.ImageView;
 
 /**
  * Created by 46321 on 2016/7/26/026.
+ *
  */
 public class MeizhiImage extends ImageView {
+    private int originalWidth;
+    private int originalHeight;
+
     public MeizhiImage(Context context) {
         this(context, null);
     }
@@ -20,12 +24,28 @@ public class MeizhiImage extends ImageView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setOriginal(int originalWidth, int originalHeight) {
+        this.originalWidth = originalWidth;
+        this.originalHeight = originalHeight;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
+        if (originalHeight > 0 && originalWidth > 0) {
+            float ratio = (float) originalWidth / (float) originalHeight;
+            int width = MeasureSpec.getSize(widthMeasureSpec);
+            int height = MeasureSpec.getSize(heightMeasureSpec);
+            if (width > 0) {
+                height = (int) ((float) width / ratio);
+            }
+            setMeasuredDimension(width, height);
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 }

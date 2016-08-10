@@ -1,5 +1,8 @@
 package xblydxj.gank.home.presenter;
 
+import android.graphics.Bitmap;
+
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -9,17 +12,15 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.api.DataApi;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.db.Meizhi.Meizhi;
 import xblydxj.gank.home.contract.MeizhiContract;
 import xblydxj.gank.home.model.meizhiModel;
-import xblydxj.gank.utils.NetWorkUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,7 +31,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     private final MeizhiContract.View mMeizhiView;
     private CompositeSubscription mSubscription;
     private DataApi mRetrofit = AppConfig.sRetrofit.create(DataApi.class);
-    private List<Meizhi> mMeizhis;
+    private List<Data.ResultsBean> mMeizhis = new ArrayList<>();
     //加载状态
     public final int STATUS_LOADING = 100;
     //成功状态
@@ -38,7 +39,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     //失败状态
     public final int STATUS_ERROR = 102;
     private meizhiModel mMeizhiModel = new meizhiModel();
-    private boolean mIsEmpty;
+    private boolean mIsEmpty = true;
 
 
     public MeizhiPresenter(MeizhiContract.View meizhiView) {
@@ -64,6 +65,11 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
         getRetrofitData((size / 10) + 1);
     }
 
+    @Override
+    public void toPhotoView(Data.ResultsBean meizhi) {
+        Logger.d(meizhi.getUrl());
+    }
+
 
     @Override
     public void subscribe() {
@@ -74,54 +80,59 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
         if (isNotRefresh) {
             mMeizhiView.updateStatus(STATUS_LOADING);
         }
-        getData(1);
+        getRetrofitData(1);
     }
 
-    private void getData(int page) {
-        List<Meizhi> meizhisCache = mMeizhiModel.isCatchExist();
-        if (NetWorkUtil.isNetWorkAvailable(AppConfig.sContext)) {
-            if (!meizhisCache.isEmpty()) {
-                mIsEmpty = false;
-                mMeizhiView.updateAdapter(meizhisCache);
-                mMeizhiView.updateStatus(STATUS_SUCCESS);
-                mMeizhiView.stopRefreshing();
-            } else {
-                mIsEmpty = true;
-            }
-            mSubscription.clear();
-            Subscription subscription = getRetrofitData(page);
-            mSubscription.add(subscription);
-        } else {
-            if (!meizhisCache.isEmpty()) {
-                mMeizhiView.updateAdapter(meizhisCache);
-                mMeizhiView.updateStatus(STATUS_SUCCESS);
-                mMeizhiView.stopRefreshing();
-            } else {
-                mMeizhiView.stopRefreshing();
-                mMeizhiView.updateStatus(STATUS_ERROR);
-            }
-        }
-    }
+    private Bitmap mBitmap;
 
-
-    private Subscription getRetrofitData(int page) {
-        return mRetrofit.getNormal("福利", 10, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    private void getRetrofitData(int page) {
+        Subscription subscription = mRetrofit.getNormal("福利", 10, page)
                 .flatMap(new Func1<Data, Observable<Data.ResultsBean>>() {
-
                     @Override
                     public Observable<Data.ResultsBean> call(Data data) {
                         Logger.d("Meizhi:flatmap");
-                        mMeizhis = new ArrayList<>();
+                        mMeizhis.clear();
                         return Observable.from(data.getResults());
                     }
                 })
+                .map(new Func1<Data.ResultsBean, Data.ResultsBean>() {
+                    @Override
+                    public Data.ResultsBean call(Data.ResultsBean resultsBean) {
+                        try {
+                            mBitmap = Glide.with(AppConfig.sContext).load(resultsBean.getUrl())
+                                    .asBitmap().into(-1, -1).get();
+                        } catch (Exception e) {
+                            Logger.e(e, "getBitmap");
+                        }
+                        return resultsBean;
+                    }
+                })
+                .flatMap(new Func1<Data.ResultsBean, Observable<Data.ResultsBean>>() {
+                    @Override
+                    public Observable<Data.ResultsBean> call(Data.ResultsBean resultsBean) {
+                        return Observable.zip(Observable.just(resultsBean),
+                                Observable.just(mBitmap), new Func2<Data.ResultsBean, Bitmap, Data.ResultsBean>() {
+                                    @Override
+                                    public Data.ResultsBean call(Data.ResultsBean resultsBean, Bitmap bitmap) {
+                                        int width = bitmap.getWidth();
+                                        int height = bitmap.getHeight();
+                                        resultsBean.setBitmap(bitmap);
+                                        resultsBean.setBitmapWidth(width);
+                                        resultsBean.setBitmapHeight(height);
+                                        return resultsBean;
+                                    }
+                                });
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Data.ResultsBean>() {
                     @Override
                     public void onCompleted() {
+                        mMeizhiView.updateAdapter(mMeizhis);
+                        mMeizhiView.stopRefreshing();
+                        mMeizhiView.updateStatus(STATUS_SUCCESS);
                         Logger.d("meizhi:complete" + mMeizhis.size());
-                        getLastDBData();
                     }
 
                     @Override
@@ -136,41 +147,15 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
 
                     @Override
                     public void onNext(Data.ResultsBean resultsBean) {
-                        Logger.d("meizhi:next");
-                        Meizhi meizhi = new Meizhi();
-                        meizhi.setUrl(resultsBean.getUrl());
-                        meizhi.setTime(resultsBean.getPublishedAt()
+                        mIsEmpty = false;
+                        resultsBean.setPublishedAt(resultsBean.getPublishedAt()
                                 .substring(0, 10)
                                 .replace("T", " "));
-                        mMeizhis.add(meizhi);
+                        Logger.d("url:" + resultsBean.getUrl());
+                        mMeizhis.add(resultsBean);
                     }
                 });
-    }
-
-    private void getLastDBData() {
-        Observable.just(mMeizhis)
-                .map(new Func1<List<Meizhi>, List<Meizhi>>() {
-                    @Override
-                    public List<Meizhi> call(List<Meizhi> meizhis) {
-                        mMeizhiModel.putMeizhisToDB(meizhis);
-                        return mMeizhiModel.isCatchExist();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Meizhi>>() {
-                    @Override
-                    public void call(List<Meizhi> meizhis) {
-                        mMeizhiView.updateAdapter(meizhis);
-                        mMeizhiView.stopRefreshing();
-                        mMeizhiView.updateStatus(STATUS_SUCCESS);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Logger.e(throwable, "meizhiDB");
-                    }
-                });
+        mSubscription.add(subscription);
     }
 
     @Override

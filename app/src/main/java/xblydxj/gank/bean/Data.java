@@ -1,9 +1,12 @@
 package xblydxj.gank.bean;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 /**
  * Created by 46321 on 2016/7/17/017.
+ *
  */
 public class Data {
 
@@ -66,8 +69,38 @@ public class Data {
     public void setResults(List<ResultsBean> results) { this.results = results;}
 
     public static class ResultsBean {
+        private Bitmap bitmap;
+        private int bitmapWidth;
+        private int bitmapHeight;
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+
+        public void setBitmapWidth(int bitmapWidth) {
+            this.bitmapWidth = bitmapWidth;
+        }
+
+        public void setBitmapHeight(int bitmapHeight) {
+            this.bitmapHeight = bitmapHeight;
+        }
+
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+
+        public int getBitmapWidth() {
+            return bitmapWidth;
+        }
+
+        public int getBitmapHeight() {
+            return bitmapHeight;
+        }
+
         private String _id;
         private String createdAt;
+
+
         private String desc;
         private String publishedAt;
         private String source;
