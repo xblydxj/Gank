@@ -13,7 +13,6 @@
         android:layout_height="wrap_content">
 
         <xblydxj.gank.widget.MeizhiImage
-            android:src="@drawable/default_image"
             android:id="@+id/meizhi"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"

@@ -5,15 +5,16 @@
 
     <ProgressBar
         android:id="@+id/loading"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="center"/>
 
+        <!--android:visibility="gone"-->
     <LinearLayout
+        android:translationZ="5dp"
         android:id="@+id/error"
         android:visibility="gone"
-        android:translationZ="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -22,15 +23,16 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:src="@drawable/ic_perm_scan_wifi"
+            android:src="@drawable/nowifi"
             />
 
         <Button
             android:id="@+id/error_reconnect"
             android:layout_width="120dp"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_height="wrap_content"
-            android:text="重新连接"
+            android:textColor="@color/md_grey_800_color_code"
+            android:text="+1s"
             />
     </LinearLayout>
 </FrameLayout>
