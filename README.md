@@ -2,9 +2,10 @@
 
 > 很可怕，gif有7M。。
 
-<img src="https://github.com/xblydxj/xblydxj/tree/master/screenshot/screenshot.gif" width="340" />
 
-![screenshot](https://github.com/xblydxj/xblydxj/tree/master/screenshot/screenshot.gif)
+![screenshot](https://github.com/xblydxj/xblydxj/tree/master/screenshot/meizhi.jpg)
+![screenshot](https://github.com/xblydxj/xblydxj/tree/master/screenshot/web.jpg)
+![screenshot](https://github.com/xblydxj/xblydxj/tree/master/screenshot/android.jpg)
 
 ### ...
 
