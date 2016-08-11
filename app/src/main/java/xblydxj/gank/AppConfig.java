@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.orhanobut.logger.Logger;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +33,7 @@ public class AppConfig extends Application {
         sContext = this;
         sHandler = new Handler();
         Logger.init();
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
         initRetrofit();
     }
 

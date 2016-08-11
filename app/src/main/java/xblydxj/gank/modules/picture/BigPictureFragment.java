@@ -1,11 +1,16 @@
 package xblydxj.gank.modules.picture;
 
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +22,7 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 import xblydxj.gank.R;
 import xblydxj.gank.utils.SnackUtils;
 
@@ -35,12 +41,11 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
 
     private String imageUrl;
     private BigPictureContract.Presenter mPresenter;
-    private Toolbar mToolBar;
+    private Bitmap mBitmap;
+    private ProgressDialog mDialog;
 
 
-    public BigPictureFragment() {
-        // Required empty public constructor
-    }
+    public BigPictureFragment() {}
 
     public static BigPictureFragment newInstance(String url) {
         BigPictureFragment fragment = new BigPictureFragment();
@@ -65,46 +70,79 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         View picture = inflater.inflate(R.layout.fragment_image, container, false);
         ButterKnife.bind(this, picture);
         initToolbar();
-        initPhotoView();
         Glide.with(this).load(imageUrl).into(mPhotoView);
+        initPhotoView();
+        mBitmap = mPhotoView.getDrawingCache();
         return picture;
     }
 
     private void initPhotoView() {
+        mPhotoView.setZoomable(true);
         mPhotoView.canZoom();
+        new PhotoViewAttacher(mPhotoView, true);
+        mPhotoView.setLongClickable(true);
+        mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
+                confirm();
+            }
+
+            @Override
+            public void onOutsidePhotoTap() {
+
+            }
+        });
         mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mPresenter.savePicture();
+                confirm();
                 return false;
+            }
+        });
+    }
+
+    private void confirm() {
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setTitle("确认保存？");
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                SnackUtils.showSnackShort(mPhotoView, "cancel~");
+            }
+        });
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                mPresenter.savePicture(mBitmap);
+                return true;
             }
         });
     }
 
     private void initToolbar() {
         setHasOptionsMenu(true);
-        mToolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
-        mToolBar.setTitle("美屡~");
-        mToolBar.setTitleTextColor(Color.WHITE);
-        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back);
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        Toolbar toolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
+        toolBar.setTitle("美屡~");
+        toolBar.setTitleTextColor(Color.WHITE);
+        toolBar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
-        mToolBar.inflateMenu(R.menu.picture_toolbar_menu);
-        mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        toolBar.inflateMenu(R.menu.picture_toolbar_menu);
+        toolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_save:
-                        mPresenter.savePicture();
-                        SnackUtils.showSnackLong(mToolBar, "showSave", "i see");
+                        mPresenter.savePicture(mBitmap);
                         break;
                     case R.id.action_share:
                         mPresenter.showShare(getActivity());
-                        SnackUtils.showSnackLong(mToolBar, "showShare", "i see");
                         break;
                 }
                 return true;
@@ -131,6 +169,23 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
     @Override
     public void setPresenter(BigPictureContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    @Override
+    public void showSnack(String s) {
+        SnackUtils.showSnackLong(mPhotoView, s, "i see");
+    }
+
+    @Override
+    public void showDialog() {
+        mDialog = new ProgressDialog(getActivity());
+        mDialog.setMessage("正在保存");
+        mDialog.show();
+    }
+
+    @Override
+    public void dismissDialog() {
+        mDialog.dismiss();
     }
 }
 

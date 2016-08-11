@@ -4,8 +4,11 @@ import android.content.Context;
 import android.webkit.WebView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import rx.Observable;
@@ -39,13 +42,25 @@ public class WebPresenter implements WebContract.Presenter {
         ShareSDK.initSDK(context);
         OnekeyShare oks = new OnekeyShare();
         oks.disableSSOWhenAuthorize();
-        oks.setTitle("来不及解释了，快上车！");
-        oks.setTitleUrl(url);
-        oks.setText(desc);
+        oks.setTitle(desc);
         oks.setUrl(url);
+        oks.setCallback(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                mWebView.showSnack("分享成功~");
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                mWebView.showSnack("发生了一些问题，分享失败了~");
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                mWebView.showSnack("分享失败~");
+            }
+        });
         oks.setComment("gank.io倾情分享");
-        oks.setSite(desc);
-        oks.setSiteUrl(url);
         oks.show(context);
     }
 

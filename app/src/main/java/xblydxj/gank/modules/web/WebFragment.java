@@ -55,12 +55,14 @@ public class WebFragment extends Fragment implements WebContract.View {
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
+        mWebContent.onResume();
         initWebView();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mWebContent.onPause();
         mPresenter.unSubscribe();
     }
 
@@ -102,6 +104,7 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     private void initWebView() {
         WebSettings settings = mWebContent.getSettings();
+        settings.setLoadsImagesAutomatically(true);
         settings.getJavaScriptEnabled();
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
@@ -144,7 +147,6 @@ public class WebFragment extends Fragment implements WebContract.View {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 mPresenter.showShare(getActivity());
-                SnackUtils.showSnackLong(mToolBar, "showShare", "i see");
                 return true;
             }
         });
@@ -153,10 +155,11 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     @Override
     public void onDestroyView() {
-        mWebContent.destroy();
         super.onDestroyView();
+        mWebContent.destroy();
         ButterKnife.unbind(this);
     }
+
 
     @Override
     public void showTitle(String desc) {
@@ -174,5 +177,10 @@ public class WebFragment extends Fragment implements WebContract.View {
         if (mWebProgress != null) {
             mWebProgress.setProgress(progress);
         }
+    }
+
+    @Override
+    public void showSnack(String str) {
+        SnackUtils.showSnackShort(mToolBar,str);
     }
 }

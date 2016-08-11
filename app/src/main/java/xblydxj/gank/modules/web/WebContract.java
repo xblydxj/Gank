@@ -17,6 +17,7 @@ public class WebContract {
 
         void updateProgress(int progress);
 
+        void showSnack(String str);
     }
 
     public interface Presenter extends BasePresenter{
