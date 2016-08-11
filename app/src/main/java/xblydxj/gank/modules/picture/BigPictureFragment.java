@@ -1,7 +1,6 @@
 package xblydxj.gank.modules.picture;
 
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,8 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import xblydxj.gank.R;
 import xblydxj.gank.utils.SnackUtils;
+import xblydxj.gank.utils.StatusBarUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -43,6 +43,7 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
     private BigPictureContract.Presenter mPresenter;
     private Bitmap mBitmap;
     private ProgressDialog mDialog;
+    private Toolbar mToolBar;
 
 
     public BigPictureFragment() {}
@@ -73,68 +74,77 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         Glide.with(this).load(imageUrl).into(mPhotoView);
         initPhotoView();
         mBitmap = mPhotoView.getDrawingCache();
+//        StatusBarUtils.setTranslucent(getActivity());
         return picture;
     }
 
     private void initPhotoView() {
         mPhotoView.setZoomable(true);
         mPhotoView.canZoom();
-        new PhotoViewAttacher(mPhotoView, true);
+//        new PhotoViewAttacher(mPhotoView, true);
         mPhotoView.setLongClickable(true);
         mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                confirm();
+                if (mToolBar.getVisibility() == View.INVISIBLE) {
+                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.colorPrimary));
+                    mToolBar.setVisibility(View.VISIBLE);
+                    mToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                } else {
+                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.md_black_color_code));
+                    mToolBar.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
             public void onOutsidePhotoTap() {
-
+                Logger.d("onclickkkkkk outside");
             }
         });
+
         mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 confirm();
-                return false;
-            }
-        });
-    }
-
-    private void confirm() {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setTitle("确认保存？");
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                SnackUtils.showSnackShort(mPhotoView, "cancel~");
-            }
-        });
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                mPresenter.savePicture(mBitmap);
                 return true;
             }
         });
     }
 
+    private void confirm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("确认保存？");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+                mPresenter.savePicture(mBitmap);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
     private void initToolbar() {
         setHasOptionsMenu(true);
-        Toolbar toolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
-        toolBar.setTitle("美屡~");
-        toolBar.setTitleTextColor(Color.WHITE);
-        toolBar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
+        mToolBar.setTitle("美屡~");
+        mToolBar.setTitleTextColor(Color.WHITE);
+        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
-        toolBar.inflateMenu(R.menu.picture_toolbar_menu);
-        toolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        mToolBar.inflateMenu(R.menu.picture_toolbar_menu);
+        mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
