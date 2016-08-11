@@ -1,16 +1,9 @@
 ## Gank.io客户端
 
 
-![pubu](https://github.com/xblydxj/xblydxj/screenshot/pubu.png) 
-![meizhi](https://github.com/xblydxj/xblydxj/tree/master/screenshot/meizhi.png) 
-![web](https://github.com/xblydxj/xblydxj/tree/master/screenshot/web.png) 
-![android](https://github.com/xblydxj/xblydxj/tree/master/screenshot/android.png)
+<img src="/screenshot/pubu.png" width="480" height="800" />  <img src="/screenshot/android.png" width="480" height="800" />
 
-
-<img src="/screenshot/web.png" width="480" height="800" />
-<img src="/screenshot/pubu.png" width="480" height="800" />
-<img src="/screenshot/android.png" width="480" height="800" />
-<img src="/screenshot/meizhi.png" width="480" height="800" />
+<img src="/screenshot/meizhi.png" width="480" height="800" />  <img src="/screenshot/web.png" width="480" height="800" />
 
 
 
