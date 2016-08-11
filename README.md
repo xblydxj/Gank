@@ -1,9 +1,9 @@
 ## Gank.io客户端
 
 
-<img src="/screenshot/pubu.png" width="480" height="800" />  <img src="/screenshot/android.png" width="480" height="800" />
+<img src="/screenshot/pubu.png" width="240" height="400" />  <img src="/screenshot/android.png" width="240" height="400" />
 
-<img src="/screenshot/meizhi.png" width="480" height="800" />  <img src="/screenshot/web.png" width="480" height="800" />
+<img src="/screenshot/meizhi.png" width="240" height="400" />  <img src="/screenshot/web.png" width="240" height="400" />
 
 
 
