@@ -153,8 +153,8 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         mWebContent.destroy();
+        super.onDestroyView();
         ButterKnife.unbind(this);
     }
 

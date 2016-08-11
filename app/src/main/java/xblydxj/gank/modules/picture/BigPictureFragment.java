@@ -55,7 +55,7 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             imageUrl = getArguments().getString(IMAGE_URL);
-            Logger.d("picture url:"+imageUrl);
+            Logger.d("picture url:" + imageUrl);
         }
     }
 
@@ -71,15 +71,22 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
     }
 
     private void initPhotoView() {
-
+        mPhotoView.canZoom();
+        mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mPresenter.savePicture();
+                return false;
+            }
+        });
     }
 
     private void initToolbar() {
-        mToolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
         setHasOptionsMenu(true);
         mToolBar = (Toolbar) getActivity().findViewById(R.id.picture_tool_bar);
         mToolBar.setTitle("美屡~");
         mToolBar.setTitleTextColor(Color.WHITE);
+        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
