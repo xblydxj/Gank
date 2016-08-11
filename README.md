@@ -12,7 +12,7 @@
 > MVP & Material Design & RxJava & Retrofit ....
 
 - 还有about模块没写，还有一些动画没加。。。
-
+- 大图浏览点击隐藏显示toolbar的bug。。。
 ### License
 
     Copyright (C) 2016 Eoin Fogarty
