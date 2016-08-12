@@ -9,7 +9,8 @@ import xblydxj.gank.modules.home.adapter.FrontEndAdapter;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 
 /**
- * Created by 46321 on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public class FrontEndFragment extends BaseFragment {
     public FrontEndFragment() {}
@@ -26,4 +27,5 @@ public class FrontEndFragment extends BaseFragment {
     public BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list) {
         return new FrontEndAdapter(list);
     }
+
 }

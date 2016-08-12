@@ -9,7 +9,7 @@ import xblydxj.gank.BaseView;
 import xblydxj.gank.bean.Data;
 
 /**
- * Created by 46321 on 2016/7/21/021.
+ * Created by xblydxj on 2016/7/21/021.
  */
 public class BaseContract {
     public interface View extends BaseView<Presenter> {

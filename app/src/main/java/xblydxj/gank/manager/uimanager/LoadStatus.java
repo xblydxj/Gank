@@ -13,7 +13,7 @@ import xblydxj.gank.R;
 import xblydxj.gank.AppConfig;
 
 /**
- * Created by 46321 on 2016/7/18/018.
+ * Created by xblydxj on 2016/7/18/018.
  */
 public class LoadStatus extends FrameLayout {
 

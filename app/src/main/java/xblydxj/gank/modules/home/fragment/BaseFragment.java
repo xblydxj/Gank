@@ -23,15 +23,16 @@ import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
+import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 import xblydxj.gank.modules.home.contract.BaseContract;
-import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.utils.SnackUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by 46321 on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public abstract class BaseFragment extends Fragment implements BaseContract.View {
 
@@ -80,7 +81,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
         mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
         mLoadStatus.addView(mContentView, 0);
-        Logger.d("count:"+mLoadStatus.getChildCount());
+        Logger.d("count:" + mLoadStatus.getChildCount());
         ButterKnife.bind(this, mLoadStatus);
         mRefresh.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.md_red_400_color_code),
@@ -88,9 +89,14 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
                 ContextCompat.getColor(getActivity(), R.color.md_green_400_color_code)
         );
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        initToolbar();
         initListener();
         mRecycler.setAdapter(mAdapter);
         return mLoadStatus;
+    }
+
+    private void initToolbar(){
+        setHasOptionsMenu(true);
     }
 
     private void initListener() {
@@ -103,8 +109,8 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
         });
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(String url,String desc) {
-                mPresenter.toWeb(url,desc);
+            public void OnItemClick(String url, String desc) {
+                mPresenter.toWeb(url, desc);
             }
         });
         mAdapter.setOnUpPull(new BaseRecyclerAdapter.OnUpPull() {
@@ -153,6 +159,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
 
     @Override
     public void showSnack() {
-        SnackUtils.showSnackShort(mRefresh,"刷新失败~");
+        SnackUtils.showSnackShort(mRefresh, "刷新失败~");
     }
 }

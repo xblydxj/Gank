@@ -20,7 +20,7 @@ import xblydxj.gank.bean.Data;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by 46321 on 2016/7/18/018.
+ * Created by xblydxj on 2016/7/18/018.
  */
 public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

@@ -27,7 +27,7 @@ import xblydxj.gank.modules.picture.BigPictureActivity;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by 46321 on 2016/7/26/026.
+ * Created by xblydxj on 2016/7/26/026.
  */
 public class MeizhiPresenter implements MeizhiContract.Presenter {
     private final MeizhiContract.View mMeizhiView;

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * Created by 46321 on 2016/7/26/026.
+ * Created by xblydxj on 2016/7/26/026.
  *
  */
 public class MeizhiImage extends ImageView {

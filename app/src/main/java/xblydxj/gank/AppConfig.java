@@ -19,7 +19,8 @@ import xblydxj.gank.api.URL;
 import xblydxj.gank.utils.CacheInterceptor;
 
 /**
- * Created by 46321 on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public class AppConfig extends Application {
 

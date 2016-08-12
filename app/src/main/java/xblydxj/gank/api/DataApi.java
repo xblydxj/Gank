@@ -6,7 +6,8 @@ import rx.Observable;
 import xblydxj.gank.bean.Data;
 
 /**
- * Created by 46321 on 2016/7/17/017.
+ * Created by xblydxj
+ * on 2016/7/17/017.
  */
 public interface DataApi {
     @GET("data/{type}/{count}/{page}")

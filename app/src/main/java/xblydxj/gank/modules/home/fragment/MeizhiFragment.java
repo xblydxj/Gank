@@ -27,15 +27,16 @@ import butterknife.OnClick;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.modules.home.contract.MeizhiContract;
 import xblydxj.gank.manager.uimanager.LoadStatus;
+import xblydxj.gank.modules.home.contract.MeizhiContract;
 import xblydxj.gank.utils.SnackUtils;
 import xblydxj.gank.widget.MeizhiImage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by 46321 on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public class MeizhiFragment extends Fragment implements MeizhiContract.View {
 

@@ -18,7 +18,7 @@ import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.utils.SnackUtils;
 
 /**
- * Created by 46321 on 2016/7/16/016.
+ * Created by xblydxj on 2016/7/16/016.
  */
 public class WebPresenter implements WebContract.Presenter {
     private final WebContract.View mWebView;

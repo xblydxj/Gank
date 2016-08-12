@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/search_card"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/home_search_edit"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/md_grey_800_color_code"
+        android:singleLine="true"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:padding="3dp"
+        android:layout_marginRight="5dp"
+        android:clickable="true"
+        android:id="@+id/home_search"
+        android:src="@drawable/ic_search"
+        />
+</android.support.v7.widget.CardView>

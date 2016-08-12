@@ -11,7 +11,7 @@ import xblydxj.gank.bean.Data;
 
 
 /**
- * Created by 46321 on 2016/7/25/025.
+ * Created by xblydxj on 2016/7/25/025.
  */
 public class AndroidAdapter extends BaseRecyclerAdapter {
     public AndroidAdapter(List<Data.ResultsBean> data) {

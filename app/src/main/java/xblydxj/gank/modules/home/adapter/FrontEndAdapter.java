@@ -10,7 +10,7 @@ import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
 
 /**
- * Created by 46321 on 2016/7/25/025.
+ * Created by xblydxj on 2016/7/25/025.
  */
 public class FrontEndAdapter extends BaseRecyclerAdapter {
     public FrontEndAdapter(List<Data.ResultsBean> data) {

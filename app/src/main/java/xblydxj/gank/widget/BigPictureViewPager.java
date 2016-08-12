@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by 46321 on 2016/8/10/010.
+ * Created by xblydxj on 2016/8/10/010.
  */
 public class BigPictureViewPager extends ViewPager {
 

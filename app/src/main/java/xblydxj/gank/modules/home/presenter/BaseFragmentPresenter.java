@@ -18,7 +18,7 @@ import xblydxj.gank.modules.web.WebActivity;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by 46321 on 2016/7/21/021.
+ * Created by xblydxj on 2016/7/21/021.
  *
  */
 public abstract class BaseFragmentPresenter implements BaseContract.Presenter {

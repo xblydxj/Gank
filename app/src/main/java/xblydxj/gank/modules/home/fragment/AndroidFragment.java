@@ -22,6 +22,7 @@ public class AndroidFragment extends BaseFragment {
         Logger.d("androidFragment");
         return AndroidFragmentHolder.instance;
     }
+
     @Override
     public BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list) {
         return new AndroidAdapter(list);
