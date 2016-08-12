@@ -1,9 +1,10 @@
 ## Gank.io客户端
+- ---------------------------------------
+### screenshot
 
+<img src="/screenshot/pubu.png" width="240" height="400" /> ······ <img src="/screenshot/android.png" width="240" height="400" />
 
-<img src="/screenshot/pubu.png" width="240" height="400" />  <img src="/screenshot/android.png" width="240" height="400" />
-
-<img src="/screenshot/meizhi.png" width="240" height="400" />  <img src="/screenshot/web.png" width="240" height="400" />
+<img src="/screenshot/meizhi.png" width="240" height="400" /> ...... <img src="/screenshot/web.png" width="240" height="400" />
 
 
 
@@ -11,10 +12,15 @@
 
 > MVP & Material Design & RxJava & Retrofit ....
 
-- 还有about模块没写，还有一些动画没加。。。
-- 大图浏览点击隐藏显示toolbar的bug。。。
 
-  ### License
+- 还有about和搜索没写，还有一些动画没加
+- 大图浏览点击隐藏显示toolbar的bug
+- RxJava的本地持久化没完善，暂时用okhttp的缓存
+
+
+
+
+### License
 
   Copyright (C) 2016 Eoin Fogarty
 
