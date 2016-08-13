@@ -28,7 +28,8 @@ import xblydxj.gank.utils.SnackUtils;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by xblydxj on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public class WebFragment extends Fragment implements WebContract.View {
 

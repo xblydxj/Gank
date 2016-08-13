@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
+import xblydxj.gank.bean.SearchResult;
 import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 import xblydxj.gank.modules.home.contract.BaseContract;
@@ -89,6 +90,7 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
                 ContextCompat.getColor(getActivity(), R.color.md_green_400_color_code)
         );
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mRecycler.setItemAnimator(new NoAlphaRecyclerViewAnimator());
         initToolbar();
         initListener();
         mRecycler.setAdapter(mAdapter);
@@ -137,9 +139,17 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
 
 
     @Override
-    public void updateAdapter(List<Data.ResultsBean> data) {
+    public void updateAdapter(List<SearchResult.ResultsBean> data) {
         list.addAll(data);
-        mAdapter.notifyDataSetChanged();
+        if (list.size() == 10) {
+            mAdapter.notifyDataSetChanged();
+        } else {
+            int index = list.size() - data.size();
+            for (int i = 0; i <= data.size(); i++) {
+                mAdapter.notifyItemChanged(index + i);
+                Logger.d("notify:" + (index + i));
+            }
+        }
     }
 
     @Override

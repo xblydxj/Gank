@@ -1,5 +1,7 @@
 package xblydxj.gank.modules.home.adapter;
 
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +15,35 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
-import xblydxj.gank.bean.Data;
-
+import xblydxj.gank.bean.SearchResult;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by xblydxj on 2016/7/18/018.
+ * Created by xblydxj
+ * on 2016/7/18/018.
  */
-public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
+    private Drawable mDrawable_android;
+    private Drawable mDrawable_ios;
+    private Drawable mDrawable_前端;
+    private Drawable mDrawable_normal;
+    private Drawable mDrawable_vedio;
+    private Drawable mDrawable_meizhi;
+    private Drawable mDrawable_sources;
 
-    private List<Data.ResultsBean> list = new ArrayList<>();
+    private List<SearchResult.ResultsBean> list = new ArrayList<>();
 
 
-    public BaseRecyclerAdapter(List<Data.ResultsBean> data) {
+    public BaseRecyclerAdapter(List<SearchResult.ResultsBean> data) {
         list = checkNotNull(data);
     }
-
 
     //条目点击回调
     public interface OnItemClickListener {
@@ -50,7 +59,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            return getTypeLayout(parent);
+            return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.recycler_item, parent, false));
         } else if (viewType == TYPE_FOOTER) {
             return new FooterViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycler_footer, parent, false));
@@ -59,12 +69,77 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         return null;
     }
 
-    public abstract RecyclerView.ViewHolder getTypeLayout(ViewGroup parent);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_ITEM && list.size() != 0) {
-            final Data.ResultsBean resultsBean = list.get(position);
+            final SearchResult.ResultsBean resultsBean = list.get(position);
+            if (mDrawable_android == null) {
+                mDrawable_android = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.drawable.item_ic_android);
+                mDrawable_android.setBounds(0, 0, mDrawable_android.getMinimumWidth(), mDrawable_android
+                        .getMinimumHeight());
+            }
+            if (mDrawable_ios == null) {
+                mDrawable_ios = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.mipmap.ic_apple);
+                mDrawable_ios.setBounds(0, 0, mDrawable_ios.getMinimumWidth(), mDrawable_ios.getMinimumHeight());
+            }
+            if (mDrawable_前端 == null) {
+                mDrawable_前端 = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.mipmap.ic_front_end);
+                mDrawable_前端.setBounds(0, 0, mDrawable_前端.getMinimumWidth(), mDrawable_前端.getMinimumHeight());
+            }
+            if (mDrawable_normal == null) {
+                mDrawable_normal = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.drawable.ic_normal);
+                mDrawable_normal.setBounds(0, 0, mDrawable_normal.getMinimumWidth(), mDrawable_normal
+                        .getMinimumHeight());
+            }
+            if (mDrawable_vedio == null) {
+                mDrawable_vedio = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.drawable.ic_player);
+                mDrawable_vedio.setBounds(0, 0, mDrawable_vedio.getMinimumWidth(), mDrawable_vedio
+                        .getMinimumHeight());
+            }
+            if (mDrawable_meizhi == null) {
+                mDrawable_meizhi = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.drawable.ic_girl);
+                mDrawable_meizhi.setBounds(0, 0, mDrawable_meizhi.getMinimumWidth(), mDrawable_meizhi
+                        .getMinimumHeight());
+            }
+            if (mDrawable_sources == null) {
+                mDrawable_sources = ContextCompat
+                        .getDrawable(AppConfig.sContext, R.drawable.ic_add_sources);
+                mDrawable_sources.setBounds(0, 0, mDrawable_sources.getMinimumWidth(), mDrawable_sources
+                        .getMinimumHeight());
+            }
+
+
+            switch (resultsBean.getType()) {
+                case "Android":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_android, null, null, null);
+                    break;
+                case "iOS":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_ios, null, null, null);
+                    break;
+                case "前端":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_前端, null, null, null);
+                    break;
+                case "休息视频":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_vedio, null, null, null);
+                    break;
+                case "福利":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_meizhi, null, null, null);
+                    break;
+                case "拓展资源":
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_sources, null, null, null);
+                    break;
+                default:
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_normal, null, null, null);
+                    break;
+            }
+
             if (resultsBean.getWho() == null) {
                 ((ItemViewHolder) holder).Author.setVisibility(View.INVISIBLE);
             } else {
@@ -84,7 +159,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
                     }
                 });
             }
-        } else {
+        } else if (list.size() >= 10) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.mRecyclerFooter.setText(R.string.loading);
             if (mOnUpPull != null) {
@@ -136,9 +211,9 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         }
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
+    public static class FooterViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.recycler_footer)
-        TextView mRecyclerFooter;
+        public TextView mRecyclerFooter;
 
         public FooterViewHolder(View itemView) {
             super(itemView);

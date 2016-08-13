@@ -5,7 +5,6 @@ import com.orhanobut.logger.Logger;
 import java.util.List;
 
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.modules.home.adapter.AndroidAdapter;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 
 /**
@@ -25,6 +24,6 @@ public class AndroidFragment extends BaseFragment {
 
     @Override
     public BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list) {
-        return new AndroidAdapter(list);
+        return new BaseRecyclerAdapter(list);
     }
 }

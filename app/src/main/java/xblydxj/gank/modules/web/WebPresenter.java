@@ -18,7 +18,8 @@ import rx.subscriptions.CompositeSubscription;
 import xblydxj.gank.utils.SnackUtils;
 
 /**
- * Created by xblydxj on 2016/7/16/016.
+ * Created by xblydxj
+ * on 2016/7/16/016.
  */
 public class WebPresenter implements WebContract.Presenter {
     private final WebContract.View mWebView;
@@ -35,6 +36,8 @@ public class WebPresenter implements WebContract.Presenter {
         mSubscriptions = new CompositeSubscription();
         webView.setPresenter(this);
     }
+
+
 
 
     @Override

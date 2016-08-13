@@ -5,7 +5,6 @@ import com.orhanobut.logger.Logger;
 import java.util.List;
 
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.modules.home.adapter.FrontEndAdapter;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 
 /**
@@ -23,9 +22,9 @@ public class FrontEndFragment extends BaseFragment {
         Logger.d("FrontEndFragment");
         return FrontEndFragmentHolder.instance;
     }
+
     @Override
     public BaseRecyclerAdapter getTypeAdapter(List<Data.ResultsBean> list) {
-        return new FrontEndAdapter(list);
+        return new BaseRecyclerAdapter(list);
     }
-
 }

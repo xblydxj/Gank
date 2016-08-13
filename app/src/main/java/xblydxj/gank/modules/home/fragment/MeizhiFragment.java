@@ -88,6 +88,7 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
                 ContextCompat.getColor(getActivity(), R.color.md_green_400_color_code)
         );
         mRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        mRecycler.setItemAnimator(new NoAlphaRecyclerViewAnimator());
 //        mRecycler.setItemAnimator(null);
         initListener();
         mRecycler.setAdapter(mAdapter);
@@ -121,8 +122,15 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
     @Override
     public void updateAdapter(List<Data.ResultsBean> data) {
         meizhis.addAll(data);
-//        mAdapter.notify();
-        mAdapter.notifyDataSetChanged();
+        if (meizhis.size() == 10) {
+            mAdapter.notifyDataSetChanged();
+        } else {
+            int index = meizhis.size() - data.size();
+            for (int i = 0; i <= data.size(); i++) {
+                mAdapter.notifyItemChanged(index + i);
+                Logger.d("notify:" + (index + i));
+            }
+        }
     }
 
     @Override
@@ -169,7 +177,7 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(((meizhiViewHolder) holder).mImageView);
             ((meizhiViewHolder) holder).time.setText(meizhis.get(position).getPublishedAt());
-            Logger.d("position:"+position+"  "+mMeizhis.size());
+            Logger.d("position:" + position + "  " + mMeizhis.size());
             if (position == (mMeizhis.size() - 1)) {
                 mPresenter.loadMore(position + 1);
             }
