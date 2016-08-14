@@ -1,4 +1,4 @@
-package xblydxj.gank.modules.search;
+package xblydxj.gank.widget;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

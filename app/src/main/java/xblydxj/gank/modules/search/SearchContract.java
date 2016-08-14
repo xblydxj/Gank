@@ -20,9 +20,11 @@ public class SearchContract {
 
         void showSnack(String s);
 
-        void updateView(List<SearchResult.ResultsBean> results, boolean b);
+        void updateView(List<SearchResult.ResultsBean> results);
 
         void intentToWeb(Intent intent);
+
+        void cleanList();
     }
 
     public interface Presenter extends BasePresenter{

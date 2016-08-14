@@ -46,11 +46,11 @@
             android:textSize="12sp"/>
 
         <Spinner
-            android:layout_width="105dp"
+            android:layout_width="115dp"
             android:layout_height="35dp"
             android:id="@+id/search_spinner"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="200dp"
+            android:layout_marginLeft="195dp"
             >
         </Spinner>
 

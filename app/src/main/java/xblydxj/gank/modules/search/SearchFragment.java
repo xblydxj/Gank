@@ -34,6 +34,7 @@ import xblydxj.gank.bean.SearchResult;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 import xblydxj.gank.utils.SnackUtils;
 import xblydxj.gank.widget.NoAlphaRecyclerViewAnimator;
+import xblydxj.gank.widget.SpinnerAdapter;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -189,10 +190,7 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
     }
 
     @Override
-    public void updateView(List<SearchResult.ResultsBean> results, boolean isOld) {
-        if (!isOld) {
-            list.clear();
-        }
+    public void updateView(List<SearchResult.ResultsBean> results) {
         list.addAll(results);
         if (list.size() == 10) {
             mAdapter.notifyDataSetChanged();
@@ -207,5 +205,10 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
     @Override
     public void intentToWeb(Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public void cleanList() {
+        list.clear();
     }
 }

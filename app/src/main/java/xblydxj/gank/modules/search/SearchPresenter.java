@@ -29,7 +29,6 @@ public class SearchPresenter implements SearchContract.Presenter {
     private static final String DESC = "DESC";
     private String mSearch;
     private String mSelectType;
-    private String type = "Android";
     private boolean mNoData = false;
 
     public SearchPresenter(SearchContract.View searchView) {
@@ -63,7 +62,8 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
         mSearch = search;
         mSelectType = selectType;
-        dialog.setMessage("正在加载~");
+        mSearchView.cleanList();
+        dialog.setMessage("正在搜索~");
         dialog.show();
         mSubscriptions.add(getResult(1,dialog));
     }
@@ -93,7 +93,6 @@ public class SearchPresenter implements SearchContract.Presenter {
 
                     @Override
                     public void onCompleted() {
-                        type = mSelectType;
                         if (dialog != null) {
                             dialog.dismiss();
                         }
@@ -114,7 +113,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                             mNoData = true;
                             mSearchView.showSnack("没有更多数据了~");
                         } else {
-                            mSearchView.updateView(results, type.equals(mSelectType));
+                            mSearchView.updateView(results);
                         }
                     }
                 });

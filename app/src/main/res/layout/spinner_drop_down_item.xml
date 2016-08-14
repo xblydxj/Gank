@@ -5,7 +5,7 @@
     style="?android:attr/spinnerDropDownItemStyle"
     android:layout_width="match_parent"
     android:drawableLeft="@drawable/ic_pageview"
-    android:drawablePadding="5dp"
+    android:drawablePadding="8dp"
     android:layout_height="28dp"
     android:ellipsize="marquee"
     android:singleLine="true"/>
