@@ -2,6 +2,7 @@ package xblydxj.gank.modules.web;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.utils.SnackUtils;
 
@@ -63,7 +65,6 @@ public class WebFragment extends Fragment implements WebContract.View {
     @Override
     public void onPause() {
         super.onPause();
-        mWebContent.onPause();
         mPresenter.unSubscribe();
     }
 
@@ -72,6 +73,12 @@ public class WebFragment extends Fragment implements WebContract.View {
         mPresenter = checkNotNull(presenter);
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mWebContent.onPause();
+    }
 
     @Nullable
     @Override
@@ -105,9 +112,29 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     private void initWebView() {
         WebSettings settings = mWebContent.getSettings();
+        settings.setPluginState(WebSettings.PluginState.ON);
+        settings.setGeolocationEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setDatabasePath(AppConfig.sContext.getCacheDir()
+                .getAbsolutePath());
+        settings.setAppCacheEnabled(true);
+        settings.setAppCachePath(AppConfig.sContext.getCacheDir()
+                .getAbsolutePath());
+        settings.setAppCacheMaxSize(Integer.MAX_VALUE);
+        mWebContent.requestFocus();
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            settings.setMediaPlaybackRequiresUserGesture(true);
+        }
         settings.setLoadsImagesAutomatically(true);
-        settings.getJavaScriptEnabled();
+        settings.setAllowFileAccess(true);
+        settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
+        settings.setAppCacheEnabled(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
         mWebContent.setWebViewClient(new WebViewClient() {
@@ -121,6 +148,12 @@ public class WebFragment extends Fragment implements WebContract.View {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 mWebProgress.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
             }
         });
         mWebContent.setWebChromeClient(new WebChromeClient() {
@@ -182,6 +215,6 @@ public class WebFragment extends Fragment implements WebContract.View {
 
     @Override
     public void showSnack(String str) {
-        SnackUtils.showSnackShort(mToolBar,str);
+        SnackUtils.showSnackShort(mToolBar, str);
     }
 }

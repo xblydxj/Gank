@@ -46,6 +46,8 @@ public class WebPresenter implements WebContract.Presenter {
         OnekeyShare oks = new OnekeyShare();
         oks.disableSSOWhenAuthorize();
         oks.setTitle(desc);
+        oks.setTitleUrl(url);
+        oks.setText(desc);
         oks.setUrl(url);
         oks.setCallback(new PlatformActionListener() {
             @Override

@@ -30,6 +30,7 @@ import xblydxj.gank.modules.home.presenter.AndroidPresenter;
 import xblydxj.gank.modules.home.presenter.FrontEndPresenter;
 import xblydxj.gank.modules.home.presenter.IOSPresenter;
 import xblydxj.gank.modules.home.presenter.MeizhiPresenter;
+import xblydxj.gank.modules.home.presenter.VideoPresenter;
 import xblydxj.gank.modules.search.SearchActivity;
 
 /**
@@ -86,11 +87,12 @@ public class HomeActivity extends AppCompatActivity {
         mIosFragment = IOSFragment.getInstance();
         mFrontEndFragment = FrontEndFragment.getInstance();
         mMeizhiFragment = new MeizhiFragment();
-        mVideoFragment = new VideoFragment();
+        mVideoFragment = VideoFragment.getInstance();
         new AndroidPresenter(mAndroidFragment);
         new IOSPresenter(mIosFragment);
         new FrontEndPresenter(mFrontEndFragment);
         new MeizhiPresenter(mMeizhiFragment);
+        new VideoPresenter(mVideoFragment);
     }
 
     private void initListener() {
@@ -135,6 +137,8 @@ public class HomeActivity extends AppCompatActivity {
         mFragments.add(new PagerInfo(titles[1], mAndroidFragment));
         mFragments.add(new PagerInfo(titles[2], mIosFragment));
         mFragments.add(new PagerInfo(titles[3], mFrontEndFragment));
+        mFragments.add(new PagerInfo(titles[4], mVideoFragment));
+
     }
 
     private void initToolbar() {

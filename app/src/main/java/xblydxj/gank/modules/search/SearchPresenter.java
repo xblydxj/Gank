@@ -1,5 +1,6 @@
 package xblydxj.gank.modules.search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -28,6 +29,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     private static final String DESC = "DESC";
     private String mSearch;
     private String mSelectType;
+    private String type = "Android";
     private boolean mNoData = false;
 
     public SearchPresenter(SearchContract.View searchView) {
@@ -48,7 +50,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void onSearch(String search, String selectType) {
+    public void onSearch(String search, String selectType, ProgressDialog dialog) {
         if (TextUtils.isEmpty(search)) {
             mSearchView.animate();
             mSearchView.showSnack("搜索内容不能为空~");
@@ -61,7 +63,9 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
         mSearch = search;
         mSelectType = selectType;
-        mSubscriptions.add(getResult(1));
+        dialog.setMessage("正在加载~");
+        dialog.show();
+        mSubscriptions.add(getResult(1,dialog));
     }
 
     @Override
@@ -78,10 +82,10 @@ public class SearchPresenter implements SearchContract.Presenter {
         if(mNoData){
             return;
         }
-        getResult((size / 10) + 1);
+        getResult((size / 10) + 1, null);
     }
 
-    private Subscription getResult(final int page) {
+    private Subscription getResult(final int page, final ProgressDialog dialog) {
         return mRetrofit.search(mSearch, mSelectType, 10, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,12 +93,18 @@ public class SearchPresenter implements SearchContract.Presenter {
 
                     @Override
                     public void onCompleted() {
-
+                        type = mSelectType;
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                        mSearchView.showSnack("加载失败~");
                     }
 
                     @Override
@@ -104,7 +114,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                             mNoData = true;
                             mSearchView.showSnack("没有更多数据了~");
                         } else {
-                            mSearchView.updateView(results);
+                            mSearchView.updateView(results, type.equals(mSelectType));
                         }
                     }
                 });

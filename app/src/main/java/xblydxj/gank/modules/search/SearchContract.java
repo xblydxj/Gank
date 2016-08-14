@@ -1,5 +1,6 @@
 package xblydxj.gank.modules.search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class SearchContract {
 
         void showSnack(String s);
 
-        void updateView(List<SearchResult.ResultsBean> results);
+        void updateView(List<SearchResult.ResultsBean> results, boolean b);
 
         void intentToWeb(Intent intent);
     }
@@ -27,7 +28,7 @@ public class SearchContract {
     public interface Presenter extends BasePresenter{
 
 
-        void onSearch(String search, String selectType);
+        void onSearch(String search, String selectType, ProgressDialog dialog);
 
         void toWeb(String url, String desc);
 

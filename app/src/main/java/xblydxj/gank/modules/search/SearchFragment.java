@@ -1,5 +1,6 @@
 package xblydxj.gank.modules.search;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -130,7 +131,7 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         mSelectType = mStringArray[i];
-        list.clear();
+//        list.clear();
     }
 
     @Override
@@ -147,7 +148,8 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
             @Override
             public void onClick(View view) {
                 String search = mSearch_edit.getText().toString().trim();
-                mPresenter.onSearch(search, mSelectType);
+                ProgressDialog dialog = new ProgressDialog(getContext());
+                mPresenter.onSearch(search, mSelectType,dialog);
             }
         });
     }
@@ -187,7 +189,10 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
     }
 
     @Override
-    public void updateView(List<SearchResult.ResultsBean> results) {
+    public void updateView(List<SearchResult.ResultsBean> results, boolean isOld) {
+        if (!isOld) {
+            list.clear();
+        }
         list.addAll(results);
         if (list.size() == 10) {
             mAdapter.notifyDataSetChanged();
