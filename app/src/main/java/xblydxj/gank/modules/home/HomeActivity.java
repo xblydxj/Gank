@@ -138,7 +138,6 @@ public class HomeActivity extends AppCompatActivity {
         mFragments.add(new PagerInfo(titles[2], mIosFragment));
         mFragments.add(new PagerInfo(titles[3], mFrontEndFragment));
         mFragments.add(new PagerInfo(titles[4], mVideoFragment));
-
     }
 
     private void initToolbar() {
