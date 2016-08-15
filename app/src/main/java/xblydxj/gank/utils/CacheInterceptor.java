@@ -14,7 +14,8 @@ import okhttp3.Response;
 import xblydxj.gank.AppConfig;
 
 /**
- * Created by Jyl on 2016/8/3.
+ * Created by Jyl
+ * on 2016/8/3.
  */
 public class CacheInterceptor implements Interceptor {
 

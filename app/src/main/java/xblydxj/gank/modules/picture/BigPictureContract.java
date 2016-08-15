@@ -1,6 +1,7 @@
 package xblydxj.gank.modules.picture;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 
 import xblydxj.gank.BasePresenter;
@@ -21,8 +22,8 @@ public class BigPictureContract {
     }
     interface Presenter extends BasePresenter{
 
-        void savePicture(Bitmap bitmap);
+        Uri savePicture(Bitmap bitmap);
 
-        void showShare(FragmentActivity activity);
+        void showShare(FragmentActivity activity, Bitmap bitmap);
     }
 }

@@ -37,7 +37,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     private List<Data.ResultsBean> mMeizhis = new ArrayList<>();
     private Bitmap mBitmap;
     private static final String IMAGE_URL = "image";
-    int clickPosition;
+
     //加载状态
     public final int STATUS_LOADING = 100;
     //成功状态
@@ -74,7 +74,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     @Override
     public void toPhotoView(FragmentActivity activity, String url) {
         Intent intent = new Intent(activity, BigPictureActivity.class);
-        intent.putExtra(IMAGE_URL,url);
+        intent.putExtra(IMAGE_URL, url);
         activity.startActivity(intent);
     }
 
@@ -92,7 +92,7 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
     }
 
 
-    private void getRetrofitData(int page) {
+    private void getRetrofitData(final int page) {
         Subscription subscription = mRetrofit.getNormal("福利", 10, page)
                 .flatMap(new Func1<Data, Observable<Data.ResultsBean>>() {
                     @Override
@@ -136,6 +136,9 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
                 .subscribe(new Subscriber<Data.ResultsBean>() {
                     @Override
                     public void onCompleted() {
+                        if (page == 1) {
+                            mMeizhiView.cleanMeizhis();
+                        }
                         mMeizhiView.updateAdapter(mMeizhis);
                         mMeizhiView.stopRefreshing();
                         mMeizhiView.updateStatus(STATUS_SUCCESS);

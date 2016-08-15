@@ -20,6 +20,8 @@ import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 
+import xblydxj.gank.widget.MaterialInterpolator;
+
 /**
  * Created on 2016/7/14.
  *
@@ -38,7 +40,7 @@ public class AnimatorUtil {
                 .alpha(1.0f)
                 .setDuration(800)
                 .setListener(viewPropertyAnimatorListener)
-                .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
+                .setInterpolator(new MaterialInterpolator())
                 .start();
     }
 
@@ -50,7 +52,7 @@ public class AnimatorUtil {
                 .scaleY(0.0f)
                 .alpha(0.0f)
                 .setDuration(800)
-                .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
+                .setInterpolator(new MaterialInterpolator())
                 .setListener(viewPropertyAnimatorListener)
                 .start();
     }

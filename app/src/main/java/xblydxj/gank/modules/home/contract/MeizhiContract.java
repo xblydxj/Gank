@@ -22,6 +22,8 @@ public class MeizhiContract {
         void updateStatus(int status);
 
         void showSnack();
+
+        void cleanMeizhis();
     }
     public interface Presenter extends BasePresenter{
 

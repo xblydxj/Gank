@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.PagerInfo;
+import xblydxj.gank.modules.about.AboutActivity;
 import xblydxj.gank.modules.home.fragment.AndroidFragment;
 import xblydxj.gank.modules.home.fragment.FrontEndFragment;
 import xblydxj.gank.modules.home.fragment.IOSFragment;
@@ -100,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final Snackbar snackbar = Snackbar.make(view, "onClick", Snackbar.LENGTH_INDEFINITE);
+                startActivity(new Intent(view.getContext(), AboutActivity.class));
                 snackbar.setAction("知道了", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -24,7 +24,7 @@ import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import xblydxj.gank.R;
 import xblydxj.gank.utils.SnackUtils;
-import xblydxj.gank.utils.StatusBarUtils;
+import xblydxj.gank.widget.MaterialInterpolator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,7 +44,7 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
     private Bitmap mBitmap;
     private ProgressDialog mDialog;
     private Toolbar mToolBar;
-
+    private boolean isToolBarHiding;
 
     public BigPictureFragment() {}
 
@@ -73,7 +73,8 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         initToolbar();
         Glide.with(this).load(imageUrl).into(mPhotoView);
         initPhotoView();
-        mBitmap = mPhotoView.getDrawingCache();
+//        mBitmap = mPhotoView.getDrawingCache();
+
 //        StatusBarUtils.setTranslucent(getActivity());
         return picture;
     }
@@ -81,24 +82,29 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
     private void initPhotoView() {
         mPhotoView.setZoomable(true);
         mPhotoView.canZoom();
-//        new PhotoViewAttacher(mPhotoView, true);
         mPhotoView.setLongClickable(true);
         mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                if (mToolBar.getVisibility() == View.INVISIBLE) {
-                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.colorPrimary));
-                    mToolBar.setVisibility(View.VISIBLE);
-                    mToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                } else {
-                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.md_black_color_code));
-                    mToolBar.setVisibility(View.INVISIBLE);
-                }
+                mToolBar.animate()
+                        .translationY(isToolBarHiding ? 0 : -mToolBar.getHeight())
+                        .setInterpolator(new MaterialInterpolator())
+                        .start();
+                isToolBarHiding = !isToolBarHiding;
+
+//
+//                if (mToolBar.getVisibility() == View.INVISIBLE) {
+//                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.colorPrimary));
+//                    mToolBar.setVisibility(View.VISIBLE);
+//                    mToolBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//                } else {
+//                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.md_black_color_code));
+//                    mToolBar.setVisibility(View.INVISIBLE);
+//                }
             }
 
             @Override
             public void onOutsidePhotoTap() {
-                Logger.d("onclickkkkkk outside");
             }
         });
 
@@ -115,6 +121,9 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("确认保存？");
         builder.setTitle("提示");
+        mPhotoView.setDrawingCacheEnabled(true);
+        mBitmap = mPhotoView.getDrawingCache();
+        Logger.d(mBitmap == null ? "xxx" : "xxxx");
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
@@ -152,7 +161,7 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
                         mPresenter.savePicture(mBitmap);
                         break;
                     case R.id.action_share:
-                        mPresenter.showShare(getActivity());
+                        mPresenter.showShare(getActivity(), mBitmap);
                         break;
                 }
                 return true;

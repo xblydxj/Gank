@@ -30,6 +30,7 @@ import xblydxj.gank.bean.Data;
 import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.modules.home.contract.MeizhiContract;
 import xblydxj.gank.utils.SnackUtils;
+import xblydxj.gank.widget.CatchStaggeredGridLayoutManager;
 import xblydxj.gank.widget.MeizhiImage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -87,7 +88,7 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
                 ContextCompat.getColor(getActivity(), R.color.md_yellow_400_color_code),
                 ContextCompat.getColor(getActivity(), R.color.md_green_400_color_code)
         );
-        mRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecycler.setLayoutManager(new CatchStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 //        mRecycler.setItemAnimator(new NoAlphaRecyclerViewAnimator());
 //        mRecycler.setItemAnimator(null);
         initListener();
@@ -99,7 +100,6 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                meizhis.clear();
                 mPresenter.updateData();
             }
         });
@@ -148,6 +148,11 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
         SnackUtils.showSnackShort(mRefresh, "刷新失败~");
     }
 
+    @Override
+    public void cleanMeizhis() {
+        meizhis.clear();
+    }
+
 
     class MeizhiAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -188,6 +193,7 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
         public int getItemCount() {
             return mMeizhis.size();
         }
+
 
         public class meizhiViewHolder extends RecyclerView.ViewHolder {
             @Bind(R.id.meizhi)
