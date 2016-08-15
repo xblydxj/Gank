@@ -18,6 +18,7 @@ import xblydxj.gank.AppConfig;
  * on 2016/8/3.
  */
 public class CacheInterceptor implements Interceptor {
+    private Toast mToast;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -25,9 +26,13 @@ public class CacheInterceptor implements Interceptor {
         Request request = chain.request();
         if (!isNetworkReachable(AppConfig.sContext)) {
             Utils.runOnUIThread(new Runnable() {
+
                 @Override
                 public void run() {
-                    Toast.makeText(AppConfig.sContext,"没有wifi我就快要死了~ (ノへ￣、)", Toast.LENGTH_LONG).show();
+                    if (mToast == null) {
+                        mToast = Toast.makeText(AppConfig.sContext, "没有wifi我就快要死了~ (ノへ￣、)", Toast.LENGTH_LONG);
+                    }
+                    mToast.show();
                 }
             });
             request = request.newBuilder()

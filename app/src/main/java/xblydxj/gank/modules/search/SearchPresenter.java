@@ -15,6 +15,7 @@ import xblydxj.gank.AppConfig;
 import xblydxj.gank.api.SearchApi;
 import xblydxj.gank.bean.SearchResult;
 import xblydxj.gank.modules.web.WebActivity;
+import xblydxj.gank.utils.CacheInterceptor;
 
 /**
  * Created by xblydxj
@@ -58,6 +59,11 @@ public class SearchPresenter implements SearchContract.Presenter {
         if (TextUtils.isEmpty(selectType)) {
             mSearchView.animate();
             mSearchView.showSnack("请选择搜索类型~");
+            return;
+        }
+        if(!CacheInterceptor.isNetworkReachable(AppConfig.sContext)){
+            mSearchView.animate();
+            mSearchView.showSnack("没有wifi，啥也搜不出来~");
             return;
         }
         mSearch = search;

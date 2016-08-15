@@ -6,6 +6,9 @@
     <string name="share_app_to_friend">分享「上车」给朋友</string>
     <string name="download_gank"/>
     <string name="share_video_to">分享视频到</string>
+    <string name="项目介绍">gank.io 每日精选一张妹纸图，一个小视频，每日推送关于Android，IOS，前端等各种干货资源。
+        \n \n主要依照Google官方MVP-todolist的MVP架构设计方式进行搭建，并搭配RxJava，Retrofit进行设计搭建。
+        \n\n数据来源：干货集中营 http://gank.io/api</string>
     <string-array name="tab_names">
         <item>妹纸</item>
         <item>Android</item>
