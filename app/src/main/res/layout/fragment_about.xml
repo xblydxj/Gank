@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/about_photo"
                 android:text="xblydxj"
@@ -74,10 +74,10 @@
                 android:layout_height="wrap_content"
                 android:linksClickable="true"
                 android:autoLink="web"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="5dp"
                 android:layout_below="@+id/xblydxj"
                 android:layout_alignLeft="@+id/xblydxj"
-                android:text="我的Github： http://github.com/xblydxj"
+                android:text="我的Github： http://github.com/xblydxj  \n另：上海找个工作"
                 android:layout_toRightOf="@+id/about_photo"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
