@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -91,6 +92,14 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
         mRecycler.setLayoutManager(new CatchStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 //        mRecycler.setItemAnimator(new NoAlphaRecyclerViewAnimator());
 //        mRecycler.setItemAnimator(null);
+        mRecycler.setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return mRefresh.isRefreshing();
+                    }
+                }
+        );
         initListener();
         mRecycler.setAdapter(mAdapter);
         return mLoadStatus;
