@@ -10,10 +10,11 @@
         \n \n主要依照Google官方MVP-todolist的MVP架构设计方式进行搭建，并搭配RxJava，Retrofit进行设计搭建。
         \n\n数据来源：干货集中营 http://gank.io/api</string>
     <string
-        name="rxjava"><a href='https://github.com/ReactiveX/RxJava'>RxJava：io.reactivex:rxjava:1.1.7 </a></string>
-    <string name="retrofit"><a href='https://github.com/square/retrofit'>Retrofit：com.squareup.retrofit2:retrofit:2.0.0-beta4 </a></string>
+        name="rxjava"><a href='https://github.com/ReactiveX/RxJava'>RxJava:io.reactivex:rxjava:1.1.7 </a></string>
+    <string name="retrofit"><a
+        href='https://github.com/square/retrofit'>Retrofit:com.squareup.retrofit2:retrofit:2.0.0-beta4 </a></string>
     <string
-        name="RxAndroid"><a href='https://github.com/ReactiveX/RxAndroid'>RxAndroid：io.reactivex:rxandroid:1.2.1
+        name="RxAndroid"><a href='https://github.com/ReactiveX/RxAndroid'>RxAndroid:io.reactivex:rxandroid:1.2.1
     </a></string>
     <string
         name="glide"><a href='https://github.com/bumptech/glide'>Glide:com.github.bumptech.glide:glide:3.7.0 </a></string>

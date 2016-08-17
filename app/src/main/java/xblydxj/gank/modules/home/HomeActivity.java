@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +155,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Logger.d("backPressed");
         if (System.currentTimeMillis() - time < 3000) {
             super.onBackPressed();
         } else {
