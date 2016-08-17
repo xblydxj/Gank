@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
-import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,10 +95,19 @@ public class HomeActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initTransition() {
         Explode explode = new Explode();
+        explode.setMode(Explode.MODE_IN);
         explode.setDuration(600);
         explode.setInterpolator(new MaterialInterpolator());
         getWindow().setExitTransition(explode);
         getWindow().setEnterTransition(explode);
+
+
+//        Slide slide = new Slide();
+//        slide.setDuration(600);
+//        slide.setSlideEdge(Gravity.END);
+//        slide.setInterpolator(new MaterialInterpolator());
+//        getWindow().setExitTransition(slide);
+//        getWindow().setEnterTransition(slide);
 
 //        Fade fade = new Fade();
 //        fade.setDuration(1000);
@@ -107,11 +115,6 @@ public class HomeActivity extends AppCompatActivity {
 //        getWindow().setExitTransition(fade);
 //        getWindow().setEnterTransition(fade);
 
-//        Slide slide = new Slide();
-//        slide.setDuration(1000);
-//        slide.setInterpolator(new MaterialInterpolator());
-//        getWindow().setExitTransition(slide);
-//        getWindow().setEnterTransition(slide);
         mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
     }
 
@@ -134,11 +137,6 @@ public class HomeActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                Slide slide = new Slide();
-                slide.setDuration(1000);
-                slide.setInterpolator(new MaterialInterpolator());
-                getWindow().setExitTransition(slide);
-                getWindow().setEnterTransition(slide);
                 mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
                 startActivity(new Intent(HomeActivity.this, AboutActivity.class), mCompat.toBundle());
             }
@@ -194,8 +192,14 @@ public class HomeActivity extends AppCompatActivity {
         assert mToolbar != null;
         mToolbar.inflateMenu(R.menu.home_toolbar_menu);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+//                Explode explode = new Explode();
+//                explode.setDuration(600);
+//                explode.setInterpolator(new MaterialInterpolator());
+//                getWindow().setExitTransition(explode);
+//                getWindow().setEnterTransition(explode);
                 mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
                 startActivity(new Intent(AppConfig.sContext, SearchActivity.class), mCompat.toBundle());
                 return true;

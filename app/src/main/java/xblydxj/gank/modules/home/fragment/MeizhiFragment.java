@@ -11,6 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +37,7 @@ import xblydxj.gank.widget.LoadStatus;
 import xblydxj.gank.modules.home.contract.MeizhiContract;
 import xblydxj.gank.utils.SnackUtils;
 import xblydxj.gank.widget.CatchStaggeredGridLayoutManager;
+import xblydxj.gank.widget.MaterialInterpolator;
 import xblydxj.gank.widget.MeizhiImage;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -218,9 +221,15 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
             public void onClick(View view) {
                 getSharedElementEnterTransition();
                 getSharedElementReturnTransition();
+                Slide slide = new Slide();
+                slide.setDuration(600);
+                slide.setSlideEdge(Gravity.END);
+                slide.setInterpolator(new MaterialInterpolator());
+                setExitTransition(slide);
+                setEnterTransition(slide);
                 ActivityOptionsCompat compat = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(getActivity(), mImageView, "card");
-                mPresenter.toPhotoView(getActivity(), meizhis.get(getAdapterPosition()).getUrl(),compat);
+                mPresenter.toPhotoView(getActivity(), meizhis.get(getAdapterPosition()).getUrl(), compat);
             }
 
             public meizhiViewHolder(View itemView) {

@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
-import android.transition.Slide;
+import android.transition.Fade;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,11 +66,19 @@ public class AboutActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void initTransition() {
-        Slide slide = new Slide();
-        slide.setDuration(600);
-        slide.setInterpolator(new MaterialInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
+//        Slide slide = new Slide();
+//        slide.setDuration(600);
+//        slide.setSlideEdge(Gravity.TOP);
+//        slide.setInterpolator(new MaterialInterpolator());
+//        getWindow().setExitTransition(slide);
+//        getWindow().setEnterTransition(slide);
+
+
+        Fade fade = new Fade();
+        fade.setDuration(600);
+        fade.setInterpolator(new MaterialInterpolator());
+        getWindow().setEnterTransition(fade);
+        getWindow().setExitTransition(fade);
     }
 
     private void initPhoto() {
