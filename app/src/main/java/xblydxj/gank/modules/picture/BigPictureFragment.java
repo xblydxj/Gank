@@ -169,6 +169,8 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_save:
+                        mPhotoView.setDrawingCacheEnabled(true);
+                        mBitmap = mPhotoView.getDrawingCache();
                         mPresenter.savePicture(mBitmap);
                         break;
                     case R.id.action_share:
