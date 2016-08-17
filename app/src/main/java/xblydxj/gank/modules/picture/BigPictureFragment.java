@@ -1,12 +1,15 @@
 package xblydxj.gank.modules.picture;
 
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -53,12 +56,23 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         Bundle args = new Bundle();
         args.putString(IMAGE_URL, url);
         fragment.setArguments(args);
+
         return fragment;
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void initTransition() {
+        getActivity().getWindow().getSharedElementEnterTransition();
+        getActivity().getWindow().getSharedElementExitTransition();
+        ActivityOptionsCompat compat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(getActivity(), mPhotoView, "logo");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             imageUrl = getArguments().getString(IMAGE_URL);
             Logger.d("picture url:" + imageUrl);
@@ -72,10 +86,8 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
         ButterKnife.bind(this, picture);
         initToolbar();
         Glide.with(this).load(imageUrl).into(mPhotoView);
+        initTransition();
         initPhotoView();
-//        mBitmap = mPhotoView.getDrawingCache();
-
-//        StatusBarUtils.setTranslucent(getActivity());
         return picture;
     }
 
@@ -91,8 +103,7 @@ public class BigPictureFragment extends Fragment implements BigPictureContract.V
                         .setInterpolator(new MaterialInterpolator())
                         .start();
                 isToolBarHiding = !isToolBarHiding;
-
-//
+                
 //                if (mToolBar.getVisibility() == View.INVISIBLE) {
 //                    StatusBarUtils.setColor(getActivity(), getResources().getColor(R.color.colorPrimary));
 //                    mToolBar.setVisibility(View.VISIBLE);

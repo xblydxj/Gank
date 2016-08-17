@@ -1,7 +1,10 @@
 package xblydxj.gank.modules.home.presenter;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
@@ -71,11 +74,12 @@ public class MeizhiPresenter implements MeizhiContract.Presenter {
         getRetrofitData((size / 10) + 1);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void toPhotoView(FragmentActivity activity, String url) {
+    public void toPhotoView(FragmentActivity activity, String url,ActivityOptionsCompat compat) {
         Intent intent = new Intent(activity, BigPictureActivity.class);
         intent.putExtra(IMAGE_URL, url);
-        activity.startActivity(intent);
+        activity.startActivity(intent, compat.toBundle());
     }
 
 

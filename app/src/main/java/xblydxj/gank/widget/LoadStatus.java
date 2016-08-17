@@ -1,4 +1,4 @@
-package xblydxj.gank.manager.uimanager;
+package xblydxj.gank.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

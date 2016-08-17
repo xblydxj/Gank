@@ -1,12 +1,17 @@
 package xblydxj.gank.modules.search;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
@@ -57,7 +63,7 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
     private TextInputEditText mSearch_edit;
     private List<Data.ResultsBean> list = new ArrayList<>();
     public BaseRecyclerAdapter mAdapter = new BaseRecyclerAdapter(list);
-
+    private ActivityOptionsCompat mCompat;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -97,12 +103,23 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
         initSpinner();
         initSearch();
         initListener();
+        initTransition();
+    }
+
+    private void initTransition() {
+        getSharedElementEnterTransition();
+        getSharedElementReturnTransition();
     }
 
     private void initListener() {
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void OnItemClick(String url, String desc) {
+            public void OnItemClick(View view, TextView describe, String url, String desc, Drawable drawable) {
+                describe.setTransitionName("desc");
+                mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                        Pair.create(view, "card"), Pair.create((View) describe, "desc"));
                 mPresenter.toWeb(url, desc);
             }
         });
@@ -204,7 +221,7 @@ public class SearchFragment extends Fragment implements SearchContract.View, Ada
 
     @Override
     public void intentToWeb(Intent intent) {
-        startActivity(intent);
+        startActivity(intent,mCompat.toBundle());
     }
 
     @Override

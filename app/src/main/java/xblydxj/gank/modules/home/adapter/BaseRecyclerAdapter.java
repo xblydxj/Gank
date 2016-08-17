@@ -34,7 +34,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Drawable mDrawable_ios;
     private Drawable mDrawable_前端;
     private Drawable mDrawable_normal;
-    private Drawable mDrawable_vedio;
+    private Drawable mDrawable_video;
     private Drawable mDrawable_meizhi;
     private Drawable mDrawable_sources;
 
@@ -47,7 +47,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //条目点击回调
     public interface OnItemClickListener {
-        void OnItemClick(String url, String desc);
+        void OnItemClick(View view, TextView describe, String url, String desc, Drawable drawable);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -71,7 +71,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_ITEM && list.size() != 0) {
             final SearchResult.ResultsBean resultsBean = list.get(position);
             if (mDrawable_android == null) {
@@ -96,10 +96,10 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mDrawable_normal.setBounds(0, 0, mDrawable_normal.getMinimumWidth(), mDrawable_normal
                         .getMinimumHeight());
             }
-            if (mDrawable_vedio == null) {
-                mDrawable_vedio = ContextCompat
+            if (mDrawable_video == null) {
+                mDrawable_video = ContextCompat
                         .getDrawable(AppConfig.sContext, R.drawable.ic_player);
-                mDrawable_vedio.setBounds(0, 0, mDrawable_vedio.getMinimumWidth(), mDrawable_vedio
+                mDrawable_video.setBounds(0, 0, mDrawable_video.getMinimumWidth(), mDrawable_video
                         .getMinimumHeight());
             }
             if (mDrawable_meizhi == null) {
@@ -127,7 +127,7 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_前端, null, null, null);
                     break;
                 case "休息视频":
-                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_vedio, null, null, null);
+                    ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_video, null, null, null);
                     break;
                 case "福利":
                     ((ItemViewHolder) holder).Describe.setCompoundDrawables(mDrawable_meizhi, null, null, null);
@@ -155,7 +155,10 @@ public class BaseRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mOnItemClickListener.OnItemClick(resultsBean.getUrl(), resultsBean.getDesc());
+                        Drawable drawable = ((ItemViewHolder) holder).Describe.getCompoundDrawables()[0];
+                        TextView describe = ((ItemViewHolder) holder).Describe;
+                        mOnItemClickListener.OnItemClick(view, describe,resultsBean.getUrl(),
+                                resultsBean.getDesc(), drawable);
                     }
                 });
             }

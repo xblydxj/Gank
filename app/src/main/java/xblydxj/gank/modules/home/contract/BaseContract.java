@@ -1,6 +1,7 @@
 package xblydxj.gank.modules.home.contract;
 
-import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.List;
 
@@ -9,7 +10,8 @@ import xblydxj.gank.BaseView;
 import xblydxj.gank.bean.Data;
 
 /**
- * Created by xblydxj on 2016/7/21/021.
+ * Created by xblydxj
+ * on 2016/7/21/021.
  */
 public class BaseContract {
     public interface View extends BaseView<Presenter> {
@@ -19,8 +21,6 @@ public class BaseContract {
         void stopRefreshing();
 
         void updateStatus(int status);
-
-        void intentToWeb(Intent intent);
 
         void showSnack();
     }
@@ -33,6 +33,6 @@ public class BaseContract {
 
         void upPullLoad(int listSize);
 
-        void toWeb(String url,String desc);
+        void toWeb(FragmentActivity activity, String url, String desc, ActivityOptionsCompat compat);
     }
 }

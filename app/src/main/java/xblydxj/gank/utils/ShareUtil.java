@@ -40,12 +40,12 @@ public class ShareUtil {
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_app_to_friend)));
     }
 
-    public static void shareVideo(Context context, String desc,String url) {
+    public static void shareWeb(Context context, String desc, String url) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, desc + url + context.getString(R.string.download_gank));
         intent.setType("text/plain");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_video_to)));
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_web)));
     }
 }

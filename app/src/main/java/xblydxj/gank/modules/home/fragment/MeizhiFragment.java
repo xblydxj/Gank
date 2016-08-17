@@ -1,8 +1,11 @@
 package xblydxj.gank.modules.home.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,7 +31,7 @@ import butterknife.OnClick;
 import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
-import xblydxj.gank.manager.uimanager.LoadStatus;
+import xblydxj.gank.widget.LoadStatus;
 import xblydxj.gank.modules.home.contract.MeizhiContract;
 import xblydxj.gank.utils.SnackUtils;
 import xblydxj.gank.widget.CatchStaggeredGridLayoutManager;
@@ -210,9 +213,14 @@ public class MeizhiFragment extends Fragment implements MeizhiContract.View {
             @Bind(R.id.time)
             TextView time;
 
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @OnClick(R.id.meizhi)
             public void onClick(View view) {
-                mPresenter.toPhotoView(getActivity(), meizhis.get(getAdapterPosition()).getUrl());
+                getSharedElementEnterTransition();
+                getSharedElementReturnTransition();
+                ActivityOptionsCompat compat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(getActivity(), mImageView, "card");
+                mPresenter.toPhotoView(getActivity(), meizhis.get(getAdapterPosition()).getUrl(),compat);
             }
 
             public meizhiViewHolder(View itemView) {

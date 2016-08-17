@@ -10,8 +10,8 @@ import com.orhanobut.logger.Logger;
 import xblydxj.gank.R;
 
 /**
- * Created by xblydxj on 2016/8/10/010.
- *
+ * Created by xblydxj
+ * on 2016/8/10/010.
  */
 
 public class BigPictureActivity extends AppCompatActivity{
@@ -26,6 +26,8 @@ public class BigPictureActivity extends AppCompatActivity{
         setContentView(R.layout.activity_bigpicture);
         initFragment();
     }
+
+
 
     private void initFragment() {
         Intent intent = getIntent();

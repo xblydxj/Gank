@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/md_white_color_code"
     android:layout_margin="2dp"
@@ -15,6 +16,7 @@
         <xblydxj.gank.widget.MeizhiImage
             android:id="@+id/meizhi"
             android:scaleType="fitXY"
+            android:transitionName="card"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,11 +2,13 @@ package xblydxj.gank.modules.web;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,16 +41,19 @@ public class WebFragment extends Fragment implements WebContract.View {
     TextView mWebHeaderTitle;
     @Bind(R.id.web_content)
     WebView mWebContent;
-
+    @Bind(R.id.web_header)
+    CardView mHeader;
     @Bind(R.id.web_progress)
     ProgressBar mWebProgress;
+
     private WebContract.Presenter mPresenter;
     private Toolbar mToolBar;
 
-    public static WebFragment newInstance(String url, String desc) {
+    public static WebFragment newInstance(String type, String url, String desc) {
         Bundle arguments = new Bundle();
         arguments.putString("url", url);
         arguments.putString("desc", desc);
+        arguments.putString("type", type);
         WebFragment webFragment = new WebFragment();
         webFragment.setArguments(arguments);
         return webFragment;
@@ -65,6 +70,7 @@ public class WebFragment extends Fragment implements WebContract.View {
     @Override
     public void onPause() {
         super.onPause();
+        mWebContent.onPause();
         mPresenter.unSubscribe();
     }
 
@@ -77,8 +83,9 @@ public class WebFragment extends Fragment implements WebContract.View {
     @Override
     public void onStop() {
         super.onStop();
-        mWebContent.onPause();
+
     }
+
 
     @Nullable
     @Override
@@ -196,7 +203,8 @@ public class WebFragment extends Fragment implements WebContract.View {
 
 
     @Override
-    public void showTitle(String desc) {
+    public void showTitle(String desc, Drawable drawable) {
+        mWebHeaderTitle.setCompoundDrawables(drawable, null, null, null);
         mWebHeaderTitle.setText(desc);
     }
 
@@ -216,5 +224,13 @@ public class WebFragment extends Fragment implements WebContract.View {
     @Override
     public void showSnack(String str) {
         SnackUtils.showSnackShort(mToolBar, str);
+    }
+
+    public void onBack() {
+//        AlphaAnimation animation = new AlphaAnimation(1, 0);
+//        animation.setDuration(1000);
+//        animation.setInterpolator(new MaterialInterpolator());
+//        mWebContent.setAnimation(animation);
+        mWebContent.setVisibility(View.GONE);
     }
 }

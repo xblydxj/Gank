@@ -28,6 +28,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     private static final String URL = "URL";
     private static final String DESC = "DESC";
+    private static final String TYPE = "TYPE";
     private String mSearch;
     private String mSelectType;
     private boolean mNoData = false;
@@ -79,6 +80,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         Intent intent = new Intent();
         intent.putExtra(URL, url);
         intent.putExtra(DESC, desc);
+        intent.putExtra(TYPE, mSelectType);
         intent.setClass(AppConfig.sContext, WebActivity.class);
         mSearchView.intentToWeb(intent);
     }

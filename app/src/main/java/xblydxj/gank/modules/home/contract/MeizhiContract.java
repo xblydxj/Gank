@@ -1,5 +1,6 @@
 package xblydxj.gank.modules.home.contract;
 
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 
 import java.util.List;
@@ -33,6 +34,6 @@ public class MeizhiContract {
 
         void loadMore(int size);
 
-        void toPhotoView(FragmentActivity activity, String url);
+        void toPhotoView(FragmentActivity activity, String url,ActivityOptionsCompat compat);
     }
 }

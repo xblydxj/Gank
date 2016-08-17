@@ -1,10 +1,14 @@
 package xblydxj.gank.modules.home.fragment;
 
-import android.content.Intent;
+import android.annotation.TargetApi;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
@@ -24,10 +29,10 @@ import xblydxj.gank.AppConfig;
 import xblydxj.gank.R;
 import xblydxj.gank.bean.Data;
 import xblydxj.gank.bean.SearchResult;
-import xblydxj.gank.manager.uimanager.LoadStatus;
 import xblydxj.gank.modules.home.adapter.BaseRecyclerAdapter;
 import xblydxj.gank.modules.home.contract.BaseContract;
 import xblydxj.gank.utils.SnackUtils;
+import xblydxj.gank.widget.LoadStatus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -52,7 +57,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
 
     public BaseContract.Presenter mPresenter;
     public LoadStatus mLoadStatus;
-    private View mContentView;
 
     @Override
     public void onResume() {
@@ -75,13 +79,14 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
     }
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        mContentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
+        View contentView = View.inflate(AppConfig.sContext, R.layout.fragment_normal, null);
         mLoadStatus = new LoadStatus(getContext());
-        mLoadStatus.addView(mContentView, 0);
+        mLoadStatus.addView(contentView, 0);
         Logger.d("count:" + mLoadStatus.getChildCount());
         ButterKnife.bind(this, mLoadStatus);
         mRefresh.setColorSchemeColors(
@@ -97,7 +102,8 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
         return mLoadStatus;
     }
 
-    private void initToolbar(){
+
+    private void initToolbar() {
         setHasOptionsMenu(true);
     }
 
@@ -110,9 +116,30 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
             }
         });
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void OnItemClick(String url, String desc) {
-                mPresenter.toWeb(url, desc);
+            public void OnItemClick(View view, TextView describe, String url, String desc, Drawable drawable) {
+                getSharedElementEnterTransition();
+                getSharedElementReturnTransition();
+
+//                Explode explode = new Explode();
+//                explode.setDuration(1000);
+//                explode.setInterpolator(new MaterialInterpolator());
+//                setExitTransition(explode);
+//                setEnterTransition(explode);
+
+//                Fade fade = new Fade();
+//                fade.setDuration(1000);
+//                fade.setInterpolator(new MaterialInterpolator());
+//                setExitTransition(fade);
+//                setEnterTransition(fade);
+//                ActivityOptionsCompat compat = ActivityOptionsCompat
+//                        .makeSceneTransitionAnimation(getActivity());
+//
+                describe.setTransitionName("desc");
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                        Pair.create(view, "card"), Pair.create((View) describe, "desc"));
+                mPresenter.toWeb(getActivity(), url, desc, compat);
             }
         });
         mAdapter.setOnUpPull(new BaseRecyclerAdapter.OnUpPull() {
@@ -160,11 +187,6 @@ public abstract class BaseFragment extends Fragment implements BaseContract.View
     @Override
     public void updateStatus(int status) {
         mLoadStatus.updateView(status);
-    }
-
-    @Override
-    public void intentToWeb(Intent intent) {
-        startActivity(intent);
     }
 
     @Override

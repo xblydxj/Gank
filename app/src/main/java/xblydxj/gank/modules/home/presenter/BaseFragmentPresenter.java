@@ -1,6 +1,8 @@
 package xblydxj.gank.modules.home.presenter;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
 
 import com.orhanobut.logger.Logger;
 
@@ -37,6 +39,7 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
 
     private static final String URL = "URL";
     private static final String DESC = "DESC";
+    private static final String TYPE = "TYPE";
 
 //    private baseModel mBaseModel = new baseModel();
 //    private boolean mIsEmpty;
@@ -50,13 +53,13 @@ public abstract class BaseFragmentPresenter implements BaseContract.Presenter {
     }
 
     @Override
-    public void toWeb(String url, String desc) {
+    public void toWeb(FragmentActivity activity, String url, String desc, ActivityOptionsCompat compat) {
         Logger.d("toWeb" + url);
-        Intent intent = new Intent();
+        Intent intent = new Intent(activity, WebActivity.class);
         intent.putExtra(URL, url);
         intent.putExtra(DESC, desc);
-        intent.setClass(AppConfig.sContext, WebActivity.class);
-        mBaseView.intentToWeb(intent);
+        intent.putExtra(TYPE, mType);
+        activity.startActivity(intent,compat.toBundle());
     }
 
     @Override

@@ -1,17 +1,22 @@
 package xblydxj.gank.modules.home;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ import xblydxj.gank.modules.home.presenter.IOSPresenter;
 import xblydxj.gank.modules.home.presenter.MeizhiPresenter;
 import xblydxj.gank.modules.home.presenter.VideoPresenter;
 import xblydxj.gank.modules.search.SearchActivity;
+import xblydxj.gank.utils.SnackUtils;
+import xblydxj.gank.widget.MaterialInterpolator;
 
 /**
  * Created by xblydxj
@@ -58,10 +65,13 @@ public class HomeActivity extends AppCompatActivity {
     private MeizhiFragment mMeizhiFragment;
     private FrontEndFragment mFrontEndFragment;
     private VideoFragment mVideoFragment;
+    private ActivityOptionsCompat mCompat;
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
@@ -79,7 +89,30 @@ public class HomeActivity extends AppCompatActivity {
         initPresenter();
         initFragments();
         initViewPager();
+        initTransition();
         initListener();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void initTransition() {
+        Explode explode = new Explode();
+        explode.setDuration(600);
+        explode.setInterpolator(new MaterialInterpolator());
+        getWindow().setExitTransition(explode);
+        getWindow().setEnterTransition(explode);
+
+//        Fade fade = new Fade();
+//        fade.setDuration(1000);
+//        fade.setInterpolator(new MaterialInterpolator());
+//        getWindow().setExitTransition(fade);
+//        getWindow().setEnterTransition(fade);
+
+//        Slide slide = new Slide();
+//        slide.setDuration(1000);
+//        slide.setInterpolator(new MaterialInterpolator());
+//        getWindow().setExitTransition(slide);
+//        getWindow().setEnterTransition(slide);
+        mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
     }
 
 
@@ -98,17 +131,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initListener() {
         mFab.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                final Snackbar snackbar = Snackbar.make(view, "onClick", Snackbar.LENGTH_INDEFINITE);
-                startActivity(new Intent(view.getContext(), AboutActivity.class));
-                snackbar.setAction("知道了", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
-                    }
-                });
-                snackbar.show();
+                Slide slide = new Slide();
+                slide.setDuration(1000);
+                slide.setInterpolator(new MaterialInterpolator());
+                getWindow().setExitTransition(slide);
+                getWindow().setEnterTransition(slide);
+                mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
+                startActivity(new Intent(HomeActivity.this, AboutActivity.class), mCompat.toBundle());
             }
         });
     }
@@ -117,6 +149,18 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initToolbar();
+    }
+
+    private long time = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - time < 3000) {
+            super.onBackPressed();
+        } else {
+            SnackUtils.showSnackShort(mFab, "再点一次退出应用~");
+            time = System.currentTimeMillis();
+        }
     }
 
     private void initViewPager() {
@@ -152,7 +196,8 @@ public class HomeActivity extends AppCompatActivity {
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(AppConfig.sContext, SearchActivity.class));
+                mCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this);
+                startActivity(new Intent(AppConfig.sContext, SearchActivity.class), mCompat.toBundle());
                 return true;
             }
         });
