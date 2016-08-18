@@ -82,7 +82,7 @@
                 android:layout_toRightOf="@+id/about_photo"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:text="我的Github： http://github.com/xblydxj  \n另：上海找个工作"
+                android:text="我的Github： http://github.com/xblydxj"
                 android:textSize="12sp"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
