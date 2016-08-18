@@ -7,9 +7,10 @@
 ### ...
 
 > MVP & Material Design & RxJava & Retrofit ....
-
-1.0版本发布了。。
-2.但本地缓存就先用okhttp吧
+ 
+上海找个工作。463212377@qq.com  ٩( ö̆ ) و联系我！
+1. 动画还待改进。
+2. rx的缓存也待修改，本地缓存就先用okhttp吧。
 
 
 ### License
