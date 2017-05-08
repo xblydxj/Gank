@@ -14,7 +14,7 @@ import okhttp3.Response;
 import xblydxj.gank.AppConfig;
 
 /**
- * Created by Jyl
+ * Created by xblydxj
  * on 2016/8/3.
  */
 public class CacheInterceptor implements Interceptor {
@@ -25,7 +25,7 @@ public class CacheInterceptor implements Interceptor {
 
         Request request = chain.request();
         if (!isNetworkReachable(AppConfig.sContext)) {
-            Utils.runOnUIThread(new Runnable() {
+            Util.runOnUIThread(new Runnable() {
 
                 @Override
                 public void run() {
